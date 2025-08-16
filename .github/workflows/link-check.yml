@@ -1,0 +1,13 @@
+name: Link Checker
+
+on:
+  pull_request:
+
+jobs:
+  linkchecker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: lycheeverse/lychee-action@v2
+        with:
+          args: --no-progress '**/*.html'
