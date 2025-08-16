@@ -11,3 +11,4 @@ h1,h2,h3{font-weight:600;margin:0 0 12px}h1{font-size:20px}h2{font-size:18px;mar
 .list{margin:8px 0 0;padding:0;list-style:none}.list li{margin:4px 0}.meta{color:var(--muted);font-size:13px;margin-left:8px}
 .footer{color:var(--muted);font-size:12px;padding:24px 16px;border-top:1px solid #eee}
 .container p{margin:0 0 16px}
+.video-container iframe{width:100%;aspect-ratio:16/9}
