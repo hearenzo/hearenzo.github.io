@@ -130,3 +130,11 @@ h3 {
   width: 100%;
   aspect-ratio: 16 / 9;
 }
+
+/* Strudel iframe */
+.strudel-container {
+  width: 100%;
+  height: 240px;
+  border: 0;
+  margin: 4px 0;
+}
