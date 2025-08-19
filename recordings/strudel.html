@@ -4,7 +4,6 @@
   <meta charset="utf-8" />
   <title>Strudel Embed</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <!-- 한 번만 로드 (non-module) -->
   <script src="https://unpkg.com/@strudel/embed@latest"></script>
   <style>
     html,body{margin:0;height:100%}
@@ -14,8 +13,7 @@
 </head>
 <body>
   <div class="wrap">
-    <!-- 코드 주석은 이 태그 "안"에 위치 -->
-    <strudel-repl><!--
+    <script type="strudel/code">
 // Made by enzo
 
 setcps(1)
@@ -89,7 +87,8 @@ $: note("c1*8").s("wt_dbass").n(run(8))
   .lpenv(-3).lpa(.1).room(.5).fast(2)
   .mask("<1 0 1 1 0 1 1 0>/5")
 .spectrum()
-    --></strudel-repl>
+    </script>
+    <strudel-repl sync></strudel-repl>
   </div>
 </body>
 </html>
