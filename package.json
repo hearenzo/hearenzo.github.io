@@ -1,0 +1,10 @@
+{
+  "name": "hearenzo.github.io",
+  "version": "1.0.0",
+  "description": "Static site for Myungseok Oh.",
+  "private": true,
+  "scripts": {
+    "build": "node scripts/minify-css.js",
+    "test": "echo \"No tests specified\""
+  }
+}
