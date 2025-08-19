@@ -18,12 +18,13 @@
 
 setcps(1)
 
-// 1. 메인 pulse
+// 1. 메인 pulse: 초고음 sine, 밀고 당기는 엇박/syncopation
 $: note("[a4 a7 ~ a8 ~ a7 a8 ~]/8")
   .sound("sine")
   .gain("[.12 .17 0 .19 .15 0 .19 .14]/8")
   .dur("[0.16 0.18 0.22 0.13 0.13 0.17 0.09 0.15]/8")
   .pan("[1 -.7 0 .6 -.5 .7 -.9 .3]/8")
+  //.mask("<1 1 0 1 1 0 1 0>/8")
   .room(0.53)
   .echo(1, 1/12, 0.48)
   .slow(1.25)
@@ -40,17 +41,19 @@ $: note("[a4 a4 ~ a6 ~ a7 a8 ~]/9")
   .slow(1.25)
 .spectrum()
 
-// 2. white noise layer
+// 2. white noise layer 
 $: n("[a4 a7 ~ a8 ~ a7 a8 ~]/9")
   .sound("white")
   .gain("[.19 .16 .14 .21 .18 .15 .22 .17]/8")
   .decay("[1.2 2.2 1.5 1.7 1.8 1.6 2.0 1.3]/8")
+  //.dur("[1.0 1.2 1.1 1.3 1.4 1.2 1.1 1.0]/8")
   .mask("<1 1 1 0 1 1 1 0>/8")
   .pan("[0 .7 -.7 0 .5 -.5 0 .3]/8")
   .room(0.31)
+  //.slow(1.08)
 .spectrum()
 
-// 3. triangle pulse
+// 3. triangle pulse 
 $: note("[a1 ~ a0 a1 ~ a1 ~ a0]/8")
   .sound("triangle")
   .gain("[.42 0 .28 .23 0 .25 .22 .33]/8")
@@ -58,19 +61,22 @@ $: note("[a1 ~ a0 a1 ~ a1 ~ a0]/8")
   .pan("[0 .2 -.2 0 .15 -.15 .22 -.22]/8")
   .mask("<1 0 1 1 0 1 1 0>/8")
   .room(0.15)
+  //.slow(1.18)
 .spectrum()
 
 // 4. pink noise
 $: note("[a1 ~ a4 a1 ~ a1 ~ a0]/8")
   .sound("pink")
   .gain("[.16 0 .11 .13 0 .10 .12 .11]/8")
+  //.decay("[1.0 1.4 0.9 1.2 1.1 1.2 1.3 1.0]/8")
   .dur("[0.7 0.5 0.6 0.5 0.7 0.4 0.6 0.5]/8")
   .pan(0)
   .mask("<1 0 1 1 0 1 1 0>/8")
   .room(0.14)
+  //.slow(1.16)
 .spectrum()
 
-// 5. triangle minimal space pulse
+// 5. triangle minimal space pulse 
 $: note("<a0 a1 a8>/2")
   .sound("triangle")
   .gain("[.01 .07 .2]/6")
@@ -80,7 +86,7 @@ $: note("<a0 a1 a8>/2")
   .echo(2, 1/32, .53)
 .spectrum()
 
-// 6. Wow bass (외부 샘플팩 로드)
+// 6. Wow bass
 samples('github:bubobubobubobubo/dough-waveforms')
 $: note("c1*8").s("wt_dbass").n(run(8))
   .lpf(perlin.range(100,1000).slow(8))
