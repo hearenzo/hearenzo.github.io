@@ -1,3 +1,5 @@
+---
+---
 <!doctype html>
 <html lang="en">
 <head>
@@ -18,20 +20,7 @@
   <meta name="twitter:image" content="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAwUBAO2A9gAAAABJRU5ErkJggg==" />
 </head>
 <body>
-  <header class="container">
-    <h1><a href="/">Myungseok Oh</a></h1>
-    <nav>
-      <ul>
-        <li><a href="/">news</a></li>
-        <li><a href="/works/">works</a></li>
-        <li><a href="/recordings/">recordings</a></li>
-        <li><a href="/publications/">publications</a></li>
-        <li><a href="/biography/">biography</a></li>
-        <li><a href="/contact/">contact</a></li>
-      </ul>
-    </nav>
-    <hr />
-  </header>
+  {% include header.html %}
   <main class="container">
   <h2>works</h2>
 <ul class='list'>
@@ -49,6 +38,6 @@
 <li><a href="/works/we-do-not-recall-2015/">&quot;WE DO NOT RECALL&quot; - Dance Film</a> <span class="meta">2015</span></li>
 </ul>
   </main>
-  <footer class="footer">© Myungseok Oh, 2025</footer>
+  {% include footer.html %}
 </body>
 </html>
