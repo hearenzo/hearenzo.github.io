@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{{ page.title }}</title>
+  <meta name="description" content="{{ page.description }}" />
+  <link rel="stylesheet" href="/assets/css/styles.min.css" />
+  <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml" />
+  <meta property="og:title" content="{{ page.title }}" />
+  <meta property="og:description" content="{{ page.description }}" />
+  <meta property="og:image" content="https://hearenzo.github.io/assets/img/og.svg" />
+  <meta property="og:url" content="https://hearenzo.github.io{{ page.url }}" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="{{ page.title }}" />
+  <meta name="twitter:description" content="{{ page.description }}" />
+  <meta name="twitter:image" content="https://hearenzo.github.io/assets/img/og.svg" />
+  {% if page.extra_head %}{{ page.extra_head }}{% endif %}
+</head>
+<body>
+  {% include header.html %}
+  <main class="container">
+    {{ content }}
+  </main>
+  {% include footer.html %}
+</body>
+</html>
