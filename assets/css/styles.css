@@ -139,3 +139,14 @@ h3 {
   border: 0;
   margin: 4px 0;
 }
+
+/* SoundCloud credits */
+.sc-credits {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.sc-credits a {
+  color: var(--muted);
+  text-decoration: none;
+}
