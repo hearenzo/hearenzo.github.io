@@ -5,6 +5,6 @@
   "private": true,
   "scripts": {
     "build": "node scripts/minify-css.js",
-    "test": "echo \"No tests specified\""
+    "test": "node scripts/check-links.js"
   }
 }
