@@ -1,27 +1,8 @@
 ---
+layout: default
+title: "Myungseok Oh | Researcher, Sound Artist, Based in Seoul"
+description: "Myungseok Oh | Researcher, Sound Artist, Based in Seoul"
 ---
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Myungseok Oh | Researcher, Sound Artist, Based in Seoul</title>
-  <meta name="description" content="Myungseok Oh | Researcher, Sound Artist, Based in Seoul" />
-  <link rel="stylesheet" href="/assets/css/styles.min.css" />
-  <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml" />
-  <meta property="og:title" content="Myungseok Oh | Researcher, Sound Artist, Based in Seoul" />
-  <meta property="og:description" content="Myungseok Oh | Researcher, Sound Artist, Based in Seoul" />
-  <meta property="og:image" content="https://hearenzo.github.io/assets/img/og.svg" />
-  <meta property="og:url" content="https://hearenzo.github.io/works/" />
-  <meta property="og:type" content="website" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Myungseok Oh | Researcher, Sound Artist, Based in Seoul" />
-  <meta name="twitter:description" content="Myungseok Oh | Researcher, Sound Artist, Based in Seoul" />
-  <meta name="twitter:image" content="https://hearenzo.github.io/assets/img/og.svg" />
-</head>
-<body>
-  {% include header.html %}
-  <main class="container">
   <h2>works</h2>
   <h3>artistic statement</h3>
   <p>
@@ -60,22 +41,19 @@ that I use. The resulting work is not just an end product but a reflection of my
 experiences, choices, and the essence of the natural elements that inspired it.
   </p>
   <h3>project</h3>
-  <div class="work-grid">
-    {% assign works = site.pages | where_exp:"p","p.url != '/works/' and p.url contains '/works/'" | sort: 'year' | reverse %}
-    {% for work in works %}
-    <div class="work-item">
-      <a href="{{ work.url }}">
-        {% if work.preview contains '.mp4' %}
-        <video src="{{ work.preview }}" muted playsinline loop></video>
-        {% else %}
-        <img src="{{ work.preview }}" alt="{{ work.title }}" />
-        {% endif %}
-        <p>{{ work.title }} <span class="meta">{{ work.year }}</span></p>
-      </a>
-    </div>
-    {% endfor %}
-  </div>
-  </main>
-  {% include footer.html %}
-</body>
-</html>
+
+<ul class='list'>
+<li><a href="/works/trans-2023/">&quot;TRANS&quot; - Dance</a> <span class="meta">2023</span></li>
+<li><a href="/works/hotel-meta-2022/">&quot;Hotel Meta&quot; - VR Exhibition</a> <span class="meta">2022</span></li>
+<li><a href="/works/decodification-live-2022/">&quot;Decodification&quot; - Live Electronics</a> <span class="meta">2022</span></li>
+<li><a href="/works/sensation-discovery-2022/">&quot;Sensation and Discovery&quot;: Playground of Eight Sounds - Sound Installation</a> <span class="meta">2022</span></li>
+<li><a href="/works/exploration-eight-sounds-2022/">&quot;Exploration of Eight Sounds&quot; - Live Electronics</a> <span class="meta">2022</span></li>
+<li><a href="/works/erasing-silence-2022/">&quot;Erasing Silence&quot; - VR Exhibition</a> <span class="meta">2022</span></li>
+<li><a href="/works/to-my-mojave-2021/">&quot;To My Mojave&quot; - Experimental Film</a> <span class="meta">2021</span></li>
+<li><a href="/works/the-elements-for-electro-acoustics-2021/">&quot;The Elements for Electro Acoustics&quot; - Electroacoustic Research</a> <span class="meta">2021</span></li>
+<li><a href="/works/salvation-from-melancholy-2021/">&quot;Salvation from Melancholy&quot; - Live Electronics</a> <span class="meta">2021</span></li>
+<li><a href="/works/sonification-project-2019/">&quot;Sonification Project&quot; - Exhibition</a> <span class="meta">2019</span></li>
+<li><a href="/works/zen-2019/">&quot;Zen&quot; - Sound Art</a> <span class="meta">2019</span></li>
+<li><a href="/works/we-do-not-recall-2015/">&quot;WE DO NOT RECALL&quot; - Dance Film</a> <span class="meta">2015</span></li>
+</ul>
+

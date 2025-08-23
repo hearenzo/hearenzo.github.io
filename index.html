@@ -1,71 +1,9 @@
 ---
+layout: default
+title: "Myungseok Oh | Researcher, Sound Artist, Based in Seoul"
+description: "Myungseok Oh | Researcher, Sound Artist, Based in Seoul"
 ---
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Myungseok Oh | Researcher, Sound Artist, Based in Seoul</title>
-  <meta name="description" content="Myungseok Oh | Researcher, Sound Artist, Based in Seoul" />
-  <link rel="stylesheet" href="/assets/css/styles.min.css" />
-  <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml" />
-  <meta property="og:title" content="Myungseok Oh | Researcher, Sound Artist, Based in Seoul" />
-  <meta property="og:description" content="Myungseok Oh | Researcher, Sound Artist, Based in Seoul" />
-  <meta property="og:image" content="https://hearenzo.github.io/assets/img/og.svg" />
-  <meta property="og:url" content="https://hearenzo.github.io/" />
-  <meta property="og:type" content="website" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Myungseok Oh | Researcher, Sound Artist, Based in Seoul" />
-  <meta name="twitter:description" content="Myungseok Oh | Researcher, Sound Artist, Based in Seoul" />
-  <meta name="twitter:image" content="https://hearenzo.github.io/assets/img/og.svg" />
-</head>
-<body>
-  {% include header.html %}
-  <main>
-    <section class="hero">
-      <video class="hero-media" autoplay loop muted playsinline>
-        <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4" />
-      </video>
-      <audio id="hero-audio" src="https://www.w3schools.com/html/horse.mp3" loop></audio>
-      <button id="sound-toggle">Sound on</button>
-    </section>
-    <div class="container">
-      <h2>news</h2>
-      <ul class='list'>
-        <li>10.11 | "TRANS III After Talk &amp; Screening" | <a href="https://www.instagram.com/studio__offbeat" target="_blank" rel="noopener noreferrer">Studio Offbeat</a> <span class="meta">A conversation and screening reflecting on the project.</span></li>
-      </ul>
-    </div>
-    <script>
-      const audio = document.getElementById('hero-audio');
-      const btn = document.getElementById('sound-toggle');
-      btn.addEventListener('click', () => {
-        if (audio.paused) {
-          audio.play();
-          btn.textContent = 'Sound off';
-        } else {
-          audio.pause();
-          btn.textContent = 'Sound on';
-        }
-      });
-    </script>
-  </main>
-  {% include footer.html %}
-  <script>
-    (function () {
-      const root = document.documentElement;
-      const toggle = document.getElementById('theme-toggle');
-      const stored = localStorage.getItem('theme');
-      if (stored) {
-        root.dataset.theme = stored;
-      }
-      if (toggle) {
-        toggle.addEventListener('click', function () {
-          const current = root.dataset.theme === 'dark' ? 'light' : 'dark';
-          root.dataset.theme = current;
-          localStorage.setItem('theme', current);
-        });
-      }
-    })();
-  </script>
-</body>
-</html>
+  <h2>news</h2>
+<ul class='list'>
+  <li>10.11 | "TRANS III After Talk &amp; Screening" | <a href="https://www.instagram.com/studio__offbeat" target="_blank" rel="noopener noreferrer">Studio Offbeat</a> <span class="meta">A conversation and screening reflecting on the project.</span></li>
+</ul>
