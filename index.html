@@ -21,11 +21,33 @@
 </head>
 <body>
   {% include header.html %}
-  <main class="container">
-  <h2>news</h2>
-<ul class='list'>
-  <li>10.11 | "TRANS III After Talk &amp; Screening" | <a href="https://www.instagram.com/studio__offbeat" target="_blank" rel="noopener noreferrer">Studio Offbeat</a> <span class="meta">A conversation and screening reflecting on the project.</span></li>
-</ul>
+  <main>
+    <section class="hero">
+      <video class="hero-media" autoplay loop muted playsinline>
+        <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4" />
+      </video>
+      <audio id="hero-audio" src="https://www.w3schools.com/html/horse.mp3" loop></audio>
+      <button id="sound-toggle">Sound on</button>
+    </section>
+    <div class="container">
+      <h2>news</h2>
+      <ul class='list'>
+        <li>10.11 | "TRANS III After Talk &amp; Screening" | <a href="https://www.instagram.com/studio__offbeat" target="_blank" rel="noopener noreferrer">Studio Offbeat</a> <span class="meta">A conversation and screening reflecting on the project.</span></li>
+      </ul>
+    </div>
+    <script>
+      const audio = document.getElementById('hero-audio');
+      const btn = document.getElementById('sound-toggle');
+      btn.addEventListener('click', () => {
+        if (audio.paused) {
+          audio.play();
+          btn.textContent = 'Sound off';
+        } else {
+          audio.pause();
+          btn.textContent = 'Sound on';
+        }
+      });
+    </script>
   </main>
   {% include footer.html %}
   <script>
