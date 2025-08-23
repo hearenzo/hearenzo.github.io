@@ -150,3 +150,27 @@ h3 {
   color: var(--muted);
   text-decoration: none;
 }
+
+/* Works grid */
+.work-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin: 16px 0 0;
+  padding: 0;
+}
+
+.work-item a {
+  display: block;
+}
+
+.work-item img,
+.work-item video {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.work-item p {
+  margin: 8px 0 0;
+}
