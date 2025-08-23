@@ -27,6 +27,7 @@ for (const file of htmlFiles) {
   const regex = /(href|src)="(?!https?:|mailto:|data:|#)([^"#]+)"/g;
   let match;
   while ((match = regex.exec(content)) !== null) {
+    if (match[2].includes('{{')) continue;
     const target = match[2].startsWith('/')
       ? path.join(root, match[2])
       : path.resolve(dir, match[2]);
