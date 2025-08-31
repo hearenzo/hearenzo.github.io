@@ -96,6 +96,14 @@ $: note("c1*8").s("wt_dbass").n(run(8))
 .spectrum()
     </script>
     <strudel-repl sync></strudel-repl>
+    <script>
+      window.addEventListener('DOMContentLoaded', () => {
+        const code = document.querySelector('script[type="text/strudel"]').textContent;
+        const repl = document.querySelector('strudel-repl');
+        repl.code = code;
+        repl.run();
+      });
+    </script>
   </div>
 </body>
 </html>
