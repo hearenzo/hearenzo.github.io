@@ -1,30 +1,17 @@
 # hearenzo.github.io
 
-This repository hosts the static site for Myungseok Oh.
+Welcome to the online home of Myungseok Oh. This website gathers my artistic projects, research interests, and ways to stay in touch in one place. It is designed as a living portfolio that evolves with new performances and collaborations.
 
-## Link checking
+## What you will find
 
-A GitHub Actions workflow runs [Lychee](https://github.com/lycheeverse/lychee) to verify all links in the site's HTML files. This helps prevent broken internal or external links in pull requests.
+- **Biography** – A narrative overview of my journey as an artist, educator, and researcher, highlighting the ideas that shape my work.
+- **Works** – Documentation of performances, compositions, and installations, including background stories and media when available.
+- **Recordings** – A curated selection of audio and video material that captures recent concerts and experiments.
+- **Publications** – Papers, essays, and other writings that explore the intersection of sound, technology, and culture.
+- **Contact** – The best ways to reach me for collaborations, performances, or conversations.
 
-### Running locally
+## Staying updated
 
-1. Install the `lychee` CLI tool:
-   ```bash
-   cargo install lychee
-   ```
-2. From the project root, scan all HTML files:
-   ```bash
-   lychee --no-progress './**/*.html'
-   ```
+The site is refreshed whenever new projects launch or upcoming events are announced. Check back regularly—or reach out through the contact page—to hear about the latest news.
 
-The command exits with a non-zero status if any links are unreachable.
-
-## CSS build
-
-To generate a minified stylesheet for production, run:
-
-```bash
-npm run build
-```
-
-The command writes the output to `assets/css/styles.min.css`.
+Thank you for visiting and sharing an interest in my work.
