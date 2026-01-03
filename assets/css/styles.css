@@ -94,6 +94,44 @@ nav a {
   letter-spacing: 0;
 }
 
+/* Language switcher */
+.lang-switcher {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.lang-btn {
+  background: none;
+  border: none;
+  color: var(--fg);
+  font-size: 13px;
+  text-transform: lowercase;
+  cursor: pointer;
+  padding: 0;
+  font-family: inherit;
+  letter-spacing: 0;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.15s ease;
+  text-decoration: none;
+}
+
+.lang-btn:hover {
+  border-bottom-color: var(--fg);
+}
+
+.lang-btn.active {
+  border-bottom-color: var(--fg);
+  font-weight: 500;
+}
+
+.lang-separator {
+  color: var(--muted);
+  font-size: 11px;
+  margin: 0 2px;
+}
+
 /* Horizontal rule */
 hr {
   border: 0;

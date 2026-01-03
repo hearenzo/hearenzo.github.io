@@ -1,0 +1,56 @@
+en:
+  nav:
+    news: "news"
+    works: "works"
+    recordings: "recordings"
+    publications: "publications"
+    biography: "biography"
+    contact: "contact"
+  pages:
+    news: "news"
+    works: "works"
+    recordings: "recordings"
+    publications: "publications"
+    biography: "biography"
+    contact: "contact"
+  sections:
+    soundcloud: "soundcloud"
+    youtube: "youtube"
+    artistic_statement: "artistic statement"
+    project: "project"
+    education: "education"
+    current_position: "current position"
+    selected_experience: "selected experience"
+    residencies: "residencies"
+    support_programs: "support programs"
+    selected_research: "selected research"
+    awards_press: "awards & press"
+
+ko:
+  nav:
+    news: "뉴스"
+    works: "작품"
+    recordings: "녹음"
+    publications: "출판물"
+    biography: "약력"
+    contact: "연락처"
+  pages:
+    news: "뉴스"
+    works: "작품"
+    recordings: "녹음"
+    publications: "출판물"
+    biography: "약력"
+    contact: "연락처"
+  sections:
+    soundcloud: "사운드클라우드"
+    youtube: "유튜브"
+    artistic_statement: "작가 노트"
+    project: "프로젝트"
+    education: "학력"
+    current_position: "현재 직책"
+    selected_experience: "주요 경력"
+    residencies: "레지던시"
+    support_programs: "지원 프로그램"
+    selected_research: "주요 연구"
+    awards_press: "수상 및 언론"
+

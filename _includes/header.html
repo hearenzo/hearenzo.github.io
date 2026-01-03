@@ -2,12 +2,17 @@
   <h1><a href="/">Myungseok Oh</a></h1>
   <nav>
     <ul>
-      <li><a href="/"{% if page.url == '/' %} aria-current="page"{% endif %}>news</a></li>
-      <li><a href="/works/"{% if page.url == '/works/' %} aria-current="page"{% endif %}>works</a></li>
-      <li><a href="/recordings/"{% if page.url == '/recordings/' %} aria-current="page"{% endif %}>recordings</a></li>
-      <li><a href="/publications/"{% if page.url == '/publications/' %} aria-current="page"{% endif %}>publications</a></li>
-      <li><a href="/biography/"{% if page.url == '/biography/' %} aria-current="page"{% endif %}>biography</a></li>
-      <li><a href="/contact/"{% if page.url == '/contact/' %} aria-current="page"{% endif %}>contact</a></li>
+      <li><a href="/"{% if page.url == '/' %} aria-current="page"{% endif %} data-i18n="nav.news">news</a></li>
+      <li><a href="/works/"{% if page.url == '/works/' %} aria-current="page"{% endif %} data-i18n="nav.works">works</a></li>
+      <li><a href="/recordings/"{% if page.url == '/recordings/' %} aria-current="page"{% endif %} data-i18n="nav.recordings">recordings</a></li>
+      <li><a href="/publications/"{% if page.url == '/publications/' %} aria-current="page"{% endif %} data-i18n="nav.publications">publications</a></li>
+      <li><a href="/biography/"{% if page.url == '/biography/' %} aria-current="page"{% endif %} data-i18n="nav.biography">biography</a></li>
+      <li><a href="/contact/"{% if page.url == '/contact/' %} aria-current="page"{% endif %} data-i18n="nav.contact">contact</a></li>
+      <li class="lang-switcher">
+        <a href="/" class="lang-btn{% unless page.lang or page.url == '/' %} active{% endunless %}" data-lang="en" aria-label="English">EN</a>
+        <span class="lang-separator">/</span>
+        <a href="/ko/" class="lang-btn{% if page.lang == 'ko' or page.url == '/ko/' %} active{% endif %}" data-lang="ko" aria-label="한국어">KO</a>
+      </li>
     </ul>
   </nav>
   <hr />
