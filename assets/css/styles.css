@@ -236,6 +236,44 @@ h3 {
   margin: 4px 0;
 }
 
+/* News videos grid */
+.news-videos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 32px;
+  margin: 20px 0 40px;
+  padding: 0;
+}
+
+@media (max-width: 600px) {
+  .news-videos-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    margin: 16px 0 32px;
+  }
+}
+
+.news-video-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.news-video-item .video-container {
+  margin: 0;
+}
+
+.video-caption {
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.5;
+  min-height: 1.5em;
+}
+
+.video-caption:empty {
+  display: none;
+}
+
 /* Recordings grid */
 .recordings-grid {
   display: grid;
