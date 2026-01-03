@@ -5,7 +5,34 @@
   <title>Strudel Embed</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="Interactive Strudel code example" />
-  <script defer src="https://unpkg.com/@strudel/embed@1.0.0"></script>
+  <script type="module">
+    import 'https://unpkg.com/@strudel/embed@1.0.0';
+
+    const initializeStrudel = () => {
+      const repl = document.querySelector('strudel-repl');
+      const codeBlock = document.querySelector('script[type="text/strudel"]');
+
+      if (!repl || !codeBlock) return;
+
+      const syncCode = () => {
+        repl.code = codeBlock.textContent;
+        // Auto-start intentionally disabled for user control
+        // repl.run();
+      };
+
+      if (window.customElements?.whenDefined) {
+        customElements.whenDefined('strudel-repl').then(syncCode);
+      } else {
+        syncCode();
+      }
+    };
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initializeStrudel);
+    } else {
+      initializeStrudel();
+    }
+  </script>
   <style>
     html,body{margin:0;height:100%}
     .wrap{min-height:100%;display:flex}
@@ -91,23 +118,6 @@ note("c1*8")
   .out()
     </script>
     <strudel-repl sync></strudel-repl>
-    <script>
-      window.addEventListener('DOMContentLoaded', () => {
-        // Wait for strudel embed to load
-        const waitForStrudel = () => {
-          const repl = document.querySelector('strudel-repl');
-          if (repl && repl.code !== undefined) {
-            const code = document.querySelector('script[type="text/strudel"]').textContent;
-            repl.code = code;
-            // Auto-start disabled for user control
-            // repl.run();
-          } else {
-            setTimeout(waitForStrudel, 100);
-          }
-        };
-        waitForStrudel();
-      });
-    </script>
   </div>
 </body>
 </html>
