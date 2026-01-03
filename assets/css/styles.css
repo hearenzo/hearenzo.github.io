@@ -4,6 +4,8 @@
   --fg: #000;
   --muted: #666;
   --maxw: 900px;
+  --border: #ddd;
+  --border-light: #eee;
 }
 /* Box sizing reset */
 * {
@@ -23,8 +25,10 @@ body {
   background: var(--bg);
   color: var(--fg);
   line-height: 1.6;
-  letter-spacing: 0.015em;
+  letter-spacing: 0.01em;
   transition: background 0.3s, color 0.3s;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* Links */
@@ -32,11 +36,15 @@ a {
   color: var(--fg);
   text-decoration: none;
   border-bottom: 1px solid transparent;
+  transition: border-color 0.2s ease;
 }
 
 a:hover {
   border-bottom-color: var(--fg);
 }
+
+/* External links (social media) */
+/* Optional: Add specific styling for external links if needed */
 
 /* Layout */
 header,
@@ -48,7 +56,13 @@ footer {
 .container {
   max-width: var(--maxw);
   margin: 0 auto;
-  padding: 24px 16px;
+  padding: 32px 20px;
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding: 24px 16px;
+  }
 }
 
 /* Navigation */
@@ -58,77 +72,116 @@ nav ul {
   margin: 0;
   display: flex;
   flex-wrap: wrap;
-  gap: 16px;
+  gap: 20px;
 }
 
 nav a {
   text-transform: lowercase;
   font-size: 14px;
+  letter-spacing: 0.02em;
 }
 
 /* Horizontal rule */
 hr {
   border: 0;
-  border-top: 1px solid #ddd;
-  margin: 24px 0;
+  border-top: 1px solid var(--border);
+  margin: 32px 0;
 }
 
 /* Headings */
 h1,
 h2,
 h3 {
-  font-weight: 600;
+  font-weight: 500;
   margin: 0 0 12px;
+  letter-spacing: 0.01em;
 }
 
 h1 {
   font-size: 20px;
+  font-weight: 400;
+  margin-bottom: 16px;
+}
+
+h1 a {
+  border-bottom: none;
+}
+
+h1 a:hover {
+  border-bottom: 1px solid var(--fg);
 }
 
 h2 {
   font-size: 18px;
-  margin-top: 24px;
+  margin-top: 32px;
+  margin-bottom: 16px;
+  font-weight: 400;
 }
 
 h3 {
   font-size: 16px;
-  margin-top: 16px;
+  margin-top: 24px;
+  margin-bottom: 12px;
+  font-weight: 400;
 }
 
 /* Lists */
 .list {
-  margin: 8px 0 0;
+  margin: 12px 0 0;
   padding: 0;
   list-style: none;
 }
 
 .list li {
-  margin: 4px 0;
+  margin: 6px 0;
+  line-height: 1.7;
 }
 
 .meta {
   color: var(--muted);
-  font-size: 13px;
+  font-size: 12px;
   margin-left: 8px;
+  font-weight: 400;
+  letter-spacing: 0.01em;
 }
 
 /* Footer */
 .footer {
   color: var(--muted);
   font-size: 12px;
-  padding: 24px 16px;
-  border-top: 1px solid #eee;
+  padding: 32px 20px;
+  border-top: 1px solid var(--border-light);
+  text-align: center;
+  letter-spacing: 0.01em;
+}
+
+@media (max-width: 600px) {
+  .footer {
+    padding: 24px 16px;
+  }
 }
 
 /* Paragraph spacing */
 .container p {
-  margin: 0 0 16px;
+  margin: 0 0 18px;
+  line-height: 1.7;
+}
+
+.container p:last-child {
+  margin-bottom: 0;
 }
 
 /* Responsive video embeds */
+.video-container {
+  margin: 20px 0;
+  position: relative;
+  width: 100%;
+}
+
 .video-container iframe {
   width: 100%;
   aspect-ratio: 16 / 9;
+  display: block;
 }
 
 /* Strudel iframe */
@@ -144,11 +197,18 @@ h3 {
 .sc-credits {
   font-size: 12px;
   color: var(--muted);
+  margin-top: 8px;
+  letter-spacing: 0.01em;
 }
 
 .sc-credits a {
   color: var(--muted);
   text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+
+.sc-credits a:hover {
+  border-bottom-color: var(--muted);
 }
 
 /* Works grid */
@@ -173,4 +233,12 @@ h3 {
 
 .work-item p {
   margin: 8px 0 0;
+  font-size: 14px;
+}
+
+/* Back link styling - can be added via class if needed */
+.back-link {
+  display: inline-block;
+  margin-top: 24px;
+  font-size: 14px;
 }
