@@ -78,6 +78,26 @@
     }
   }
 
+  // Fix back links in project pages
+  function fixBackLinks() {
+    const currentLang = getCurrentLang();
+    const backLinks = document.querySelectorAll('a[href="/works/"], a[href="/ko/works/"]');
+    
+    backLinks.forEach(link => {
+      if (currentLang === 'ko') {
+        link.href = '/ko/works/';
+        if (link.textContent.includes('back')) {
+          link.textContent = '← 뒤로';
+        }
+      } else {
+        link.href = '/works/';
+        if (link.textContent.includes('뒤로')) {
+          link.textContent = '← back';
+        }
+      }
+    });
+  }
+
   // Initialize
   function init() {
     const currentLang = getCurrentLang();
@@ -90,6 +110,9 @@
       const langUrl = getLangUrl(lang, currentPath);
       btn.href = langUrl;
     });
+
+    // Fix back links
+    fixBackLinks();
   }
 
   // Run when DOM is ready
