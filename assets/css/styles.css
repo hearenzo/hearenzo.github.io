@@ -3,7 +3,7 @@
   --bg: #fff;
   --fg: #000;
   --muted: #666;
-  --maxw: 900px;
+  --maxw: 1000px;
   --border: #ddd;
   --border-light: #eee;
 }
@@ -24,8 +24,8 @@ body {
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans KR", Arial, sans-serif;
   background: var(--bg);
   color: var(--fg);
-  line-height: 1.6;
-  letter-spacing: 0.01em;
+  line-height: 1.5;
+  letter-spacing: 0;
   transition: background 0.3s, color 0.3s;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -36,10 +36,23 @@ a {
   color: var(--fg);
   text-decoration: none;
   border-bottom: 1px solid transparent;
-  transition: border-color 0.2s ease;
+  transition: border-color 0.15s ease;
 }
 
 a:hover {
+  border-bottom-color: var(--fg);
+}
+
+/* Heading links - use transparent border for smooth transition */
+h1 a,
+h2 a,
+h3 a {
+  border-bottom: 1px solid transparent;
+}
+
+h1 a:hover,
+h2 a:hover,
+h3 a:hover {
   border-bottom-color: var(--fg);
 }
 
@@ -56,12 +69,12 @@ footer {
 .container {
   max-width: var(--maxw);
   margin: 0 auto;
-  padding: 32px 20px;
+  padding: 24px 16px;
 }
 
 @media (max-width: 600px) {
   .container {
-    padding: 24px 16px;
+    padding: 20px 12px;
   }
 }
 
@@ -72,99 +85,91 @@ nav ul {
   margin: 0;
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: 16px;
 }
 
 nav a {
   text-transform: lowercase;
-  font-size: 14px;
-  letter-spacing: 0.02em;
+  font-size: 13px;
+  letter-spacing: 0;
 }
 
 /* Horizontal rule */
 hr {
   border: 0;
   border-top: 1px solid var(--border);
-  margin: 32px 0;
+  margin: 24px 0;
 }
 
 /* Headings */
 h1,
 h2,
 h3 {
-  font-weight: 500;
-  margin: 0 0 12px;
-  letter-spacing: 0.01em;
+  font-weight: 400;
+  margin: 0;
+  letter-spacing: 0;
 }
 
 h1 {
-  font-size: 20px;
-  font-weight: 400;
-  margin-bottom: 16px;
-}
-
-h1 a {
-  border-bottom: none;
-}
-
-h1 a:hover {
-  border-bottom: 1px solid var(--fg);
+  font-size: 18px;
+  margin-bottom: 12px;
 }
 
 h2 {
-  font-size: 18px;
-  margin-top: 32px;
-  margin-bottom: 16px;
-  font-weight: 400;
-}
-
-h3 {
   font-size: 16px;
   margin-top: 24px;
   margin-bottom: 12px;
   font-weight: 400;
 }
 
+h3 {
+  font-size: 14px;
+  margin-top: 20px;
+  margin-bottom: 8px;
+  font-weight: 400;
+}
+
 /* Lists */
 .list {
-  margin: 12px 0 0;
+  margin: 8px 0 0;
   padding: 0;
   list-style: none;
 }
 
 .list li {
-  margin: 6px 0;
-  line-height: 1.7;
+  margin: 4px 0;
+  line-height: 1.5;
 }
 
 .meta {
   color: var(--muted);
-  font-size: 12px;
+  font-size: 11px;
   margin-left: 8px;
   font-weight: 400;
-  letter-spacing: 0.01em;
+  letter-spacing: 0;
 }
 
 /* Footer */
 .footer {
   color: var(--muted);
-  font-size: 12px;
-  padding: 32px 20px;
+  font-size: 11px;
+  padding: 24px 16px;
   border-top: 1px solid var(--border-light);
   text-align: center;
-  letter-spacing: 0.01em;
+  letter-spacing: 0;
 }
 
 @media (max-width: 600px) {
   .footer {
-    padding: 24px 16px;
+    padding: 20px 12px;
   }
 }
 
 /* Paragraph spacing */
 .container p {
-  margin: 0 0 18px;
-  line-height: 1.7;
+  margin: 0 0 12px;
+  line-height: 1.5;
+  font-size: 14px;
 }
 
 .container p:last-child {
@@ -173,7 +178,7 @@ h3 {
 
 /* Responsive video embeds */
 .video-container {
-  margin: 20px 0;
+  margin: 12px 0;
   position: relative;
   width: 100%;
 }
@@ -195,10 +200,10 @@ h3 {
 
 /* SoundCloud credits */
 .sc-credits {
-  font-size: 12px;
+  font-size: 11px;
   color: var(--muted);
-  margin-top: 8px;
-  letter-spacing: 0.01em;
+  margin-top: 6px;
+  letter-spacing: 0;
 }
 
 .sc-credits a {
@@ -232,8 +237,8 @@ h3 {
 }
 
 .work-item p {
-  margin: 8px 0 0;
-  font-size: 14px;
+  margin: 6px 0 0;
+  font-size: 13px;
 }
 
 /* Back link styling - can be added via class if needed */
