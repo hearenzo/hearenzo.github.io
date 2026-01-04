@@ -1,0 +1,32 @@
+<svg width="1200" height="630" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#ffffff"/>
+  
+  <!-- Prism concept - refracted light -->
+  <g opacity="0.15">
+    <path d="M 200 315 L 600 200 L 600 430 Z" fill="#000000"/>
+    <path d="M 600 200 L 1000 315 L 600 430 Z" fill="#000000"/>
+  </g>
+  
+  <!-- Sound wave visualization -->
+  <g stroke="#000000" stroke-width="2" fill="none" opacity="0.3">
+    <path d="M 100 400 Q 300 350, 500 400 T 900 400" stroke-width="1.5"/>
+    <path d="M 100 450 Q 300 400, 500 450 T 900 450" stroke-width="1"/>
+    <path d="M 100 500 Q 300 450, 500 500 T 900 500" stroke-width="0.8"/>
+  </g>
+  
+  <!-- Mechanical elements - representing sound objects -->
+  <g opacity="0.2">
+    <circle cx="300" cy="250" r="3" fill="#000000"/>
+    <circle cx="900" cy="250" r="3" fill="#000000"/>
+    <line x1="300" y1="250" x2="600" y2="315" stroke="#000000" stroke-width="1"/>
+    <line x1="900" y1="250" x2="600" y2="315" stroke="#000000" stroke-width="1"/>
+  </g>
+  
+  <!-- Name -->
+  <text x="600" y="350" font-family="system-ui, -apple-system, sans-serif" font-size="32" font-weight="400" text-anchor="middle" fill="#000000" letter-spacing="0.05em">Myungseok Oh</text>
+  
+  <!-- Subtitle -->
+  <text x="600" y="390" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="400" text-anchor="middle" fill="#666666" letter-spacing="0.1em">Sound Artist · Researcher</text>
+</svg>
+

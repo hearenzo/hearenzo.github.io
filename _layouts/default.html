@@ -9,13 +9,17 @@
   <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml" />
   <meta property="og:title" content="{{ page.title }}" />
   <meta property="og:description" content="{{ page.description }}" />
-  <meta property="og:image" content="https://hearenzo.github.io/assets/img/og.svg" />
+  <meta property="og:image" content="{% if page.og_image %}{{ page.og_image }}{% else %}https://hearenzo.github.io/assets/img/og.svg{% endif %}" />
   <meta property="og:url" content="https://hearenzo.github.io{{ page.url }}" />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="{{ page.title }}" />
   <meta name="twitter:description" content="{{ page.description }}" />
-  <meta name="twitter:image" content="https://hearenzo.github.io/assets/img/og.svg" />
+  <meta name="twitter:image" content="{% if page.og_image %}{{ page.og_image }}{% else %}https://hearenzo.github.io/assets/img/og.svg{% endif %}" />
+  
+  {% if page.image %}
+  <meta name="image" content="{{ page.image }}" />
+  {% endif %}
   {% if page.extra_head %}{{ page.extra_head }}{% endif %}
 </head>
 <body>
