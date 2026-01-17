@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Myungseok Oh - Sound Artist</title>
+  <script src="https://unpkg.com/meyda@5.6.3/dist/web/meyda.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #000;
+      overflow: hidden;
+      font-family: 'IBM Plex Mono', monospace;
+      color: #fff;
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+    }
+
+    .corner-info {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 10;
+    }
+
+    .title {
+      font-size: 9px;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+    }
+
+    .play-btn {
+      position: fixed;
+      bottom: 16px;
+      left: 16px;
+      width: 32px;
+      height: 32px;
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.2);
+      cursor: pointer;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .play-btn:hover { border-color: rgba(255,255,255,0.5); }
+    .play-btn.playing { border-color: #fff; }
+
+    .play-icon {
+      width: 0; height: 0;
+      border-left: 7px solid rgba(255,255,255,0.5);
+      border-top: 4px solid transparent;
+      border-bottom: 4px solid transparent;
+      margin-left: 2px;
+    }
+
+    .play-btn.playing .play-icon {
+      border: none;
+      width: 8px; height: 8px;
+      margin-left: 0;
+      background: linear-gradient(90deg, #fff 0%, #fff 35%, transparent 35%, transparent 65%, #fff 65%, #fff 100%);
+    }
+
+    .time-display {
+      position: fixed;
+      bottom: 20px;
+      left: 58px;
+      font-size: 9px;
+      color: rgba(255,255,255,0.25);
+      z-index: 20;
+    }
+
+    .enter-link {
+      position: fixed;
+      bottom: 16px;
+      right: 16px;
+      color: rgba(255,255,255,0.4);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-decoration: none;
+      text-transform: uppercase;
+      z-index: 20;
+      padding: 6px 10px;
+      border: 1px solid rgba(255,255,255,0.2);
+      transition: all 0.3s ease;
+    }
+
+    .enter-link::before {
+      content: '[ ';
+      opacity: 0.6;
+    }
+
+    .enter-link::after {
+      content: ' ]';
+      opacity: 0.6;
+    }
+
+    .enter-link:hover {
+      color: rgba(255,255,255,0.9);
+      border-color: rgba(255,255,255,0.6);
+    }
+
+    .enter-link:hover::before,
+    .enter-link:hover::after {
+      opacity: 1;
+    }
+
+    .seekbar {
+      position: fixed;
+      bottom: 20px;
+      left: 120px;
+      right: 100px;
+      height: 1px;
+      background: rgba(255,255,255,0.1);
+      cursor: pointer;
+      z-index: 20;
+    }
+
+    .seekbar-progress {
+      height: 100%;
+      background: #fff;
+      width: 0;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canvas"></canvas>
+
+  <div class="corner-info">
+    <div class="title">myungseok oh</div>
+  </div>
+
+  <a href="index.html" class="enter-link">enter</a>
+
+  <button class="play-btn" id="playBtn">
+    <div class="play-icon"></div>
+  </button>
+
+  <div class="time-display" id="timeDisplay">00:00:00:00</div>
+
+  <div class="seekbar" id="seekbar">
+    <div class="seekbar-progress" id="seekbarProgress"></div>
+  </div>
+
+  <script>
+    // ============================================
+    // DATA.VERSE + SEEING BIRDSONG STYLE
+    // Meyda.js for MFCC, Spectral analysis
+    // Dynamic box spawning based on audio features
+    // ============================================
+
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const playBtn = document.getElementById('playBtn');
+
+    const img = new Image();
+    img.src = 'assets/images/Trans3.png';
+
+    let audio, audioCtx, analyser, source, meydaAnalyzer;
+    let isPlaying = false;
+    let time = 0;
+    let frame = 0;
+
+    let imgX, imgY, imgW, imgH;
+
+    // Dynamic detection boxes (spawned by audio)
+    let boxes = [];
+    const MAX_BOXES = 30;
+
+    // Audio features from Meyda
+    let features = {
+      mfcc: new Array(13).fill(0),
+      spectralCentroid: 0,
+      spectralFlux: 0,
+      rms: 0,
+      zcr: 0,
+      spectralRolloff: 0
+    };
+
+    // Smoothed values
+    let smoothCentroid = 0;
+    let smoothFlux = 0;
+    let smoothRms = 0;
+    let lastSpawnTime = 0;
+
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      calculateImageBounds();
+    }
+
+    function calculateImageBounds() {
+      if (!img.width) return;
+      const canvasRatio = canvas.width / canvas.height;
+      const imgRatio = img.width / img.height;
+
+      if (imgRatio > canvasRatio) {
+        imgW = canvas.width * 0.85;
+        imgH = imgW / imgRatio;
+      } else {
+        imgH = canvas.height * 0.85;
+        imgW = imgH * imgRatio;
+      }
+
+      imgX = (canvas.width - imgW) / 2;
+      imgY = (canvas.height - imgH) / 2;
+    }
+
+    img.onload = () => {
+      calculateImageBounds();
+    };
+
+    async function initAudio() {
+      audio = new Audio();
+      audio.src = 'assets/audio/Trans3_Live_Session_web.mp3';
+      audio.crossOrigin = 'anonymous';
+
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      source = audioCtx.createMediaElementSource(audio);
+
+      // Basic analyser for visualization
+      analyser = audioCtx.createAnalyser();
+      analyser.fftSize = 256;
+
+      source.connect(analyser);
+      analyser.connect(audioCtx.destination);
+
+      // Meyda analyzer for advanced features
+      try {
+        if (typeof Meyda !== 'undefined') {
+          meydaAnalyzer = Meyda.createMeydaAnalyzer({
+            audioContext: audioCtx,
+            source: source,
+            bufferSize: 512,
+            featureExtractors: [
+              'mfcc',
+              'spectralCentroid',
+              'spectralFlux',
+              'rms',
+              'zcr',
+              'spectralRolloff'
+            ],
+            callback: (f) => {
+              if (f) {
+                if (f.mfcc) features.mfcc = f.mfcc;
+                features.spectralCentroid = f.spectralCentroid || 0;
+                features.spectralFlux = f.spectralFlux || 0;
+                features.rms = f.rms || 0;
+                features.zcr = f.zcr || 0;
+                features.spectralRolloff = f.spectralRolloff || 0;
+              }
+            }
+          });
+          console.log('Meyda initialized');
+        } else {
+          console.log('Meyda not available, using fallback');
+        }
+      } catch (e) {
+        console.log('Meyda error:', e);
+      }
+
+      audio.addEventListener('timeupdate', updateTimeDisplay);
+      audio.addEventListener('ended', () => {
+        isPlaying = false;
+        playBtn.classList.remove('playing');
+        if (meydaAnalyzer) meydaAnalyzer.stop();
+      });
+
+      audio.load();
+    }
+
+    function updateTimeDisplay() {
+      const t = audio.currentTime;
+      const h = Math.floor(t / 3600);
+      const m = Math.floor((t % 3600) / 60);
+      const s = Math.floor(t % 60);
+      const f = Math.floor((t % 1) * 30);
+      document.getElementById('timeDisplay').textContent =
+        `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}:${String(f).padStart(2,'0')}`;
+      if (audio.duration) {
+        document.getElementById('seekbarProgress').style.width = (t / audio.duration * 100) + '%';
+      }
+    }
+
+    async function togglePlay() {
+      if (!audioCtx) await initAudio();
+      if (audioCtx.state === 'suspended') await audioCtx.resume();
+
+      if (isPlaying) {
+        audio.pause();
+        if (meydaAnalyzer) meydaAnalyzer.stop();
+        isPlaying = false;
+      } else {
+        await audio.play();
+        if (meydaAnalyzer) meydaAnalyzer.start();
+        isPlaying = true;
+      }
+      playBtn.classList.toggle('playing', isPlaying);
+    }
+
+    function seek(e) {
+      if (!audio || !audio.duration) return;
+      const rect = e.currentTarget.getBoundingClientRect();
+      audio.currentTime = ((e.clientX - rect.left) / rect.width) * audio.duration;
+    }
+
+    // Spawn box based on audio features
+    function spawnBox() {
+      if (boxes.length >= MAX_BOXES) {
+        boxes.shift(); // Remove oldest
+      }
+
+      // Map audio features to position
+      const mfcc0 = features.mfcc[0] || 0;
+      const mfcc1 = features.mfcc[1] || 0;
+      const mfcc2 = features.mfcc[2] || 0;
+      const centroid = features.spectralCentroid || 2000;
+      const flux = features.spectralFlux || 0.05;
+      const rms = features.rms || 0.2;
+      const zcr = features.zcr || 0;
+
+      // Use multiple features combined with randomness for better spread
+      // Base position influenced by audio, with significant random spread
+      const audioInfluence = 0.4; // How much audio affects position (0-1)
+      const randomSpread = 1 - audioInfluence;
+
+      // Normalize features to 0-1 range
+      const normMfcc0 = (mfcc0 + 25) / 50; // MFCC typically -25 to 25
+      const normMfcc1 = (mfcc1 + 20) / 40;
+      const normCentroid = Math.min(1, Math.max(0, centroid / 8000));
+      const normZcr = Math.min(1, zcr / 200);
+
+      // X position: mix of MFCC[0] and random
+      const audioX = (normMfcc0 + normMfcc1) / 2;
+      const x = 0.08 + (audioX * audioInfluence + Math.random() * randomSpread) * 0.84;
+
+      // Y position: mix of centroid and random
+      const audioY = 1 - normCentroid; // High freq = top
+      const y = 0.08 + (audioY * audioInfluence + Math.random() * randomSpread) * 0.84;
+
+      // Size based on RMS (loudness)
+      const size = 0.04 + rms * 0.14 + Math.random() * 0.03;
+
+      // Generate unique ID based on features
+      const id = `SND_${frame.toString(16).toUpperCase().padStart(4, '0')}`;
+
+      // Label based on spectral characteristics
+      let label;
+      if (normCentroid < 0.33) {
+        label = 'LOW_FREQ';
+      } else if (normCentroid < 0.66) {
+        label = 'MID_FREQ';
+      } else {
+        label = 'HIGH_FREQ';
+      }
+
+      boxes.push({
+        id,
+        label,
+        x: Math.min(0.92, Math.max(0.08, x)),
+        y: Math.min(0.92, Math.max(0.08, y)),
+        w: size * (0.8 + Math.random() * 0.4),
+        h: size * (0.6 + Math.random() * 0.5),
+        birth: time,
+        life: 100 + flux * 150 + Math.random() * 50,
+        alpha: 0,
+        active: true,
+        scanProgress: Math.random(),
+        // Store audio features at spawn time
+        mfcc0: mfcc0,
+        centroid: centroid,
+        flux: flux,
+        rms: rms,
+        energy: Math.max(0.3, rms + flux * 0.5)
+      });
+
+      console.log('Box spawned:', boxes.length);
+    }
+
+    function drawDetectionBox(box) {
+      const energy = Math.max(0.3, box.energy || 0.3);
+      const pulse = 1 + energy * 0.15;
+      const shake = box.active && energy > 0.4 ? (Math.random() - 0.5) * energy * 2 : 0;
+
+      const baseX = imgX + box.x * imgW;
+      const baseY = imgY + box.y * imgH;
+      const baseW = box.w * imgW;
+      const baseH = box.h * imgH;
+
+      const w = baseW * pulse;
+      const h = baseH * pulse;
+      const x = baseX - (w - baseW) / 2 + shake;
+      const y = baseY - (h - baseH) / 2 + shake * 0.5;
+
+      const alpha = box.alpha;
+      if (alpha < 0.05) return;
+
+      // Draw image clipped to box area
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(x, y, w, h);
+      ctx.clip();
+      ctx.globalAlpha = alpha * (0.7 + energy * 0.3);
+      ctx.drawImage(img, imgX, imgY, imgW, imgH);
+      ctx.restore();
+
+      const lineWidth = 1.5 + energy * 1.5;
+
+      // Main box
+      ctx.strokeStyle = `rgba(255,255,255,${alpha * (0.6 + energy * 0.4)})`;
+      ctx.lineWidth = lineWidth * 0.6;
+      ctx.strokeRect(x, y, w, h);
+
+      // Corners
+      const corner = Math.min(w, h) * (0.18 + energy * 0.12);
+      ctx.strokeStyle = `rgba(255,255,255,${alpha * (0.8 + energy * 0.2)})`;
+      ctx.lineWidth = lineWidth;
+
+      // TL
+      ctx.beginPath();
+      ctx.moveTo(x, y + corner);
+      ctx.lineTo(x, y);
+      ctx.lineTo(x + corner, y);
+      ctx.stroke();
+
+      // TR
+      ctx.beginPath();
+      ctx.moveTo(x + w - corner, y);
+      ctx.lineTo(x + w, y);
+      ctx.lineTo(x + w, y + corner);
+      ctx.stroke();
+
+      // BL
+      ctx.beginPath();
+      ctx.moveTo(x, y + h - corner);
+      ctx.lineTo(x, y + h);
+      ctx.lineTo(x + corner, y + h);
+      ctx.stroke();
+
+      // BR
+      ctx.beginPath();
+      ctx.moveTo(x + w - corner, y + h);
+      ctx.lineTo(x + w, y + h);
+      ctx.lineTo(x + w, y + h - corner);
+      ctx.stroke();
+
+      // Scan line
+      if (box.active) {
+        const scanSpeed = 0.02 + energy * 0.06;
+        box.scanProgress += scanSpeed;
+        const scanY = y + (box.scanProgress % 1) * h;
+        ctx.strokeStyle = `rgba(255,255,255,${alpha * (0.4 + energy * 0.6)})`;
+        ctx.lineWidth = 1 + energy;
+        ctx.beginPath();
+        ctx.moveTo(x, scanY);
+        ctx.lineTo(x + w, scanY);
+        ctx.stroke();
+      }
+
+      // Labels
+      ctx.font = '8px IBM Plex Mono';
+      ctx.fillStyle = `rgba(255,255,255,${alpha * 0.7})`;
+
+      // ID
+      ctx.fillText(box.id, x + 3, y - 4);
+
+      // Feature values
+      const mfccText = `M:${box.mfcc0 ? box.mfcc0.toFixed(1) : '0'}`;
+      ctx.fillText(mfccText, x + w - 30, y - 4);
+
+      // Centroid
+      const centText = `C:${box.centroid ? box.centroid.toFixed(0) : '0'}`;
+      ctx.fillText(centText, x + 3, y + h + 10);
+
+      // RMS
+      const rmsText = `R:${box.rms ? box.rms.toFixed(3) : '0'}`;
+      ctx.fillText(rmsText, x + w - 40, y + h + 10);
+
+      // Crosshair
+      const cx = x + w/2;
+      const cy = y + h/2;
+      const crossSize = 5 + energy * 8;
+      ctx.strokeStyle = `rgba(255,255,255,${alpha * (0.2 + energy * 0.4)})`;
+      ctx.lineWidth = 1 + energy;
+      ctx.beginPath();
+      ctx.moveTo(cx - crossSize, cy);
+      ctx.lineTo(cx + crossSize, cy);
+      ctx.moveTo(cx, cy - crossSize);
+      ctx.lineTo(cx, cy + crossSize);
+      ctx.stroke();
+
+      // Pulse ring on high energy
+      if (energy > 0.4 && box.active) {
+        const ringRadius = Math.min(w, h) * 0.3 * (1 + energy * 0.5);
+        ctx.strokeStyle = `rgba(255,255,255,${alpha * energy * 0.4})`;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.arc(cx, cy, ringRadius, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+    }
+
+    function draw() {
+      ctx.fillStyle = '#000';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      if (!img.width) {
+        requestAnimationFrame(draw);
+        return;
+      }
+
+      // Always get FFT data for reliable audio analysis
+      if (analyser && isPlaying) {
+        const dataArray = new Uint8Array(analyser.frequencyBinCount);
+        analyser.getByteFrequencyData(dataArray);
+
+        // Calculate features from FFT
+        let sum = 0, lowSum = 0, midSum = 0, highSum = 0;
+        let weightedSum = 0;
+        const len = dataArray.length;
+
+        for (let i = 0; i < len; i++) {
+          const val = dataArray[i];
+          sum += val;
+          weightedSum += val * i; // For centroid calculation
+          if (i < len * 0.2) lowSum += val;
+          else if (i < len * 0.5) midSum += val;
+          else highSum += val;
+        }
+
+        const avgLevel = sum / len / 255;
+        const lowLevel = lowSum / (len * 0.2) / 255;
+        const midLevel = midSum / (len * 0.3) / 255;
+        const highLevel = highSum / (len * 0.5) / 255;
+
+        // Calculate spectral centroid (weighted average of frequencies)
+        const centroid = sum > 0 ? (weightedSum / sum) * (22050 / len) : 1000;
+
+        // Calculate flux (change from previous frame)
+        const flux = Math.abs(avgLevel - smoothRms) * 3;
+
+        // Always update features from FFT (more reliable than Meyda)
+        features.rms = avgLevel;
+        features.spectralFlux = flux;
+        features.spectralCentroid = centroid;
+        features.mfcc[0] = (lowLevel - midLevel) * 30;
+        features.mfcc[1] = (midLevel - highLevel) * 25;
+        features.mfcc[2] = (highLevel - 0.3) * 20;
+      }
+
+      // Smooth audio features
+      smoothCentroid += (features.spectralCentroid - smoothCentroid) * 0.1;
+      smoothFlux += (features.spectralFlux - smoothFlux) * 0.15;
+      smoothRms += (features.rms - smoothRms) * 0.2;
+
+      const totalEnergy = smoothRms + smoothFlux * 0.5;
+
+      // Spawn boxes based on audio activity
+      if (isPlaying && time - lastSpawnTime > 8) {
+        // Spawn based on energy level
+        const spawnChance = smoothRms * 0.8 + smoothFlux * 2;
+        if (spawnChance > 0.05 || Math.random() < 0.03) {
+          spawnBox();
+          lastSpawnTime = time;
+        }
+      }
+
+      // No base image - only visible through boxes
+
+      // Update and draw boxes
+      for (let i = boxes.length - 1; i >= 0; i--) {
+        const box = boxes[i];
+        const age = time - box.birth;
+
+        if (age > box.life) {
+          boxes.splice(i, 1);
+          continue;
+        }
+
+        // Update energy based on current audio
+        box.energy = box.energy * 0.9 + (smoothRms + smoothFlux * 0.5) * 0.1;
+
+        // Fade in/out
+        if (age < 10) {
+          box.alpha = age / 10;
+        } else if (age > box.life - 20) {
+          box.alpha = (box.life - age) / 20;
+          box.active = false;
+        } else {
+          box.alpha = 1;
+        }
+
+        drawDetectionBox(box);
+      }
+
+      // Global scan line
+      const globalScanY = imgY + ((time * 0.5) % imgH);
+      ctx.strokeStyle = `rgba(255,255,255,${0.08 + smoothRms * 0.2})`;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(imgX, globalScanY);
+      ctx.lineTo(imgX + imgW, globalScanY);
+      ctx.stroke();
+
+      // Bottom status bar - horizontal layout
+      ctx.font = '8px IBM Plex Mono';
+      ctx.fillStyle = 'rgba(255,255,255,0.3)';
+
+      const statusY = imgY + imgH + 16;
+      const items = [
+        `IMG:${img.width}x${img.height}`,
+        `SCALE:${(imgW/img.width).toFixed(3)}`,
+        `FRAME:${String(frame).padStart(7, '0')}`,
+        `MFCC:${features.mfcc[0] ? features.mfcc[0].toFixed(1) : '0.0'}`,
+        `CENT:${smoothCentroid.toFixed(0)}`,
+        `FLUX:${smoothFlux.toFixed(3)}`,
+        `RMS:${smoothRms.toFixed(3)}`,
+        `BOX:${boxes.length}/${MAX_BOXES}`
+      ];
+
+      let statusX = imgX;
+      const spacing = 12;
+      items.forEach(item => {
+        ctx.fillText(item, statusX, statusY);
+        statusX += ctx.measureText(item).width + spacing;
+      });
+
+      // Border
+      ctx.strokeStyle = `rgba(255,255,255,${0.08 + totalEnergy * 0.12})`;
+      ctx.lineWidth = 1;
+      ctx.strokeRect(imgX, imgY, imgW, imgH);
+
+      // Glitch
+      if (smoothFlux > 0.05 && Math.random() < 0.2) {
+        const glitchY = imgY + Math.random() * imgH;
+        ctx.fillStyle = `rgba(255,255,255,${0.15 + Math.random() * 0.25})`;
+        ctx.fillRect(imgX, glitchY, imgW, 1 + Math.random() * 2);
+      }
+
+      time++;
+      frame++;
+      requestAnimationFrame(draw);
+    }
+
+    window.addEventListener('resize', resize);
+    playBtn.addEventListener('click', togglePlay);
+    document.getElementById('seekbar').addEventListener('click', seek);
+
+    resize();
+    draw();
+  </script>
+</body>
+</html>
