@@ -2,7 +2,8 @@
   <h1><a href="/">Myungseok Oh</a></h1>
   <nav>
     <ul>
-      <li><a href="/"{% if page.url == '/' %} aria-current="page"{% endif %} data-i18n="nav.news">news</a></li>
+      <li><a href="/"{% if page.url == '/' %} aria-current="page"{% endif %} data-i18n="nav.main">main</a></li>
+      <li><a href="/news/"{% if page.url == '/news/' %} aria-current="page"{% endif %} data-i18n="nav.news">news</a></li>
       <li><a href="/works/"{% if page.url == '/works/' %} aria-current="page"{% endif %} data-i18n="nav.works">works</a></li>
       <li><a href="/recordings/"{% if page.url == '/recordings/' %} aria-current="page"{% endif %} data-i18n="nav.recordings">recordings</a></li>
       <li><a href="/publications/"{% if page.url == '/publications/' %} aria-current="page"{% endif %} data-i18n="nav.publications">publications</a></li>
