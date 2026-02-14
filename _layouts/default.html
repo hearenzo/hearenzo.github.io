@@ -3,19 +3,59 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  {% assign canonical_url = "https://hearenzo.github.io" | append: page.url %}
+  {% if page.lang == 'ko' %}
+    {% assign en_url = page.url | remove_first: '/ko' %}
+    {% assign ko_url = page.url %}
+    {% assign locale = "ko_KR" %}
+    {% assign lang_tag = "ko-KR" %}
+  {% else %}
+    {% assign en_url = page.url %}
+    {% assign ko_url = '/ko' | append: page.url %}
+    {% assign locale = "en_US" %}
+    {% assign lang_tag = "en-US" %}
+  {% endif %}
   <title>{{ page.title }}</title>
   <meta name="description" content="{{ page.description }}" />
+  <link rel="canonical" href="{{ canonical_url }}" />
+  <link rel="alternate" hreflang="en" href="https://hearenzo.github.io{{ en_url }}" />
+  <link rel="alternate" hreflang="ko" href="https://hearenzo.github.io{{ ko_url }}" />
+  <link rel="alternate" hreflang="x-default" href="https://hearenzo.github.io{{ en_url }}" />
   <link rel="stylesheet" href="/assets/css/styles.min.css" />
   <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml" />
+  <meta property="og:site_name" content="Myungseok Oh" />
+  <meta property="og:locale" content="{{ locale }}" />
   <meta property="og:title" content="{{ page.title }}" />
   <meta property="og:description" content="{{ page.description }}" />
   <meta property="og:image" content="{% if page.og_image %}{{ page.og_image }}{% else %}https://hearenzo.github.io/assets/img/og.svg{% endif %}" />
-  <meta property="og:url" content="https://hearenzo.github.io{{ page.url }}" />
+  <meta property="og:url" content="{{ canonical_url }}" />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="{{ page.title }}" />
   <meta name="twitter:description" content="{{ page.description }}" />
   <meta name="twitter:image" content="{% if page.og_image %}{{ page.og_image }}{% else %}https://hearenzo.github.io/assets/img/og.svg{% endif %}" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": {{ page.title | jsonify }},
+    "description": {{ page.description | jsonify }},
+    "url": {{ canonical_url | jsonify }},
+    "inLanguage": {{ lang_tag | jsonify }},
+    "isPartOf": {
+      "@type": "WebSite",
+      "name": "Myungseok Oh",
+      "url": "https://hearenzo.github.io"
+    },
+    "about": {
+      "@type": "Person",
+      "name": "Myungseok Oh",
+      "alternateName": "오명석",
+      "jobTitle": "Sound Artist and Artistic Researcher",
+      "url": "https://hearenzo.github.io"
+    }
+  }
+  </script>
   
   {% if page.image %}
   <meta name="image" content="{{ page.image }}" />

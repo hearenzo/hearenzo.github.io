@@ -34,6 +34,13 @@ for (const file of htmlFiles) {
     if (!fs.existsSync(target)) {
       console.error(`Broken link in ${path.relative(root, file)}: ${match[2]}`);
       broken = true;
+      continue;
+    }
+
+    const stat = fs.statSync(target);
+    if (stat.isDirectory() && !fs.existsSync(path.join(target, 'index.html'))) {
+      console.error(`Broken link in ${path.relative(root, file)}: ${match[2]}`);
+      broken = true;
     }
   }
 }

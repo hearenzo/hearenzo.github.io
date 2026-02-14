@@ -3,22 +3,45 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Myungseok Oh | Researcher, Sound Artist, Based in Seoul</title>
-  <meta name="description" content="Myungseok Oh | Researcher, Sound Artist, Based in Seoul" />
+  <title>Myungseok Oh | Sound Artist & Artistic Researcher</title>
+  <meta name="description" content="Official website of Myungseok Oh (오명석): sound art works, recordings, publications, news, and contact." />
+  <link rel="canonical" href="https://hearenzo.github.io/" />
+  <link rel="alternate" hreflang="en" href="https://hearenzo.github.io/" />
+  <link rel="alternate" hreflang="ko" href="https://hearenzo.github.io/ko/news/" />
+  <link rel="alternate" hreflang="x-default" href="https://hearenzo.github.io/" />
   <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml" />
 
   <!-- Open Graph -->
-  <meta property="og:title" content="Myungseok Oh | Researcher, Sound Artist, Based in Seoul" />
-  <meta property="og:description" content="Myungseok Oh | Researcher, Sound Artist, Based in Seoul" />
+  <meta property="og:site_name" content="Myungseok Oh" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Myungseok Oh | Sound Artist & Artistic Researcher" />
+  <meta property="og:description" content="Official website of Myungseok Oh (오명석): sound art works, recordings, publications, news, and contact." />
   <meta property="og:image" content="https://hearenzo.github.io/assets/img/og.svg" />
   <meta property="og:url" content="https://hearenzo.github.io/" />
   <meta property="og:type" content="website" />
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Myungseok Oh | Researcher, Sound Artist, Based in Seoul" />
-  <meta name="twitter:description" content="Myungseok Oh | Researcher, Sound Artist, Based in Seoul" />
+  <meta name="twitter:title" content="Myungseok Oh | Sound Artist & Artistic Researcher" />
+  <meta name="twitter:description" content="Official website of Myungseok Oh (오명석): sound art works, recordings, publications, news, and contact." />
   <meta name="twitter:image" content="https://hearenzo.github.io/assets/img/og.svg" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Myungseok Oh",
+    "url": "https://hearenzo.github.io/",
+    "inLanguage": ["en-US", "ko-KR"],
+    "publisher": {
+      "@type": "Person",
+      "name": "Myungseok Oh",
+      "alternateName": "오명석",
+      "jobTitle": "Sound Artist and Artistic Researcher",
+      "email": "mailto:hearenzo@naver.com",
+      "sameAs": ["https://www.instagram.com/hearenzo_/"]
+    }
+  }
+  </script>
 
   <script src="https://unpkg.com/meyda@5.6.3/dist/web/meyda.min.js"></script>
   <style>
@@ -137,15 +160,91 @@
       left: 120px;
       right: 100px;
       height: 1px;
-      background: rgba(255,255,255,0.1);
+      background: transparent;
       cursor: pointer;
       z-index: 20;
+      -webkit-appearance: none;
+      appearance: none;
     }
 
-    .seekbar-progress {
+    .seekbar:focus-visible {
+      outline: 1px solid rgba(255,255,255,0.6);
+      outline-offset: 4px;
+    }
+
+    .seekbar::-webkit-slider-runnable-track {
       height: 100%;
+      background: rgba(255,255,255,0.2);
+    }
+
+    .seekbar::-moz-range-track {
+      height: 100%;
+      background: rgba(255,255,255,0.2);
+      border: 0;
+    }
+
+    .seekbar::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      border: 0;
       background: #fff;
-      width: 0;
+      margin-top: -4.5px;
+    }
+
+    .seekbar::-moz-range-thumb {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      border: 0;
+      background: #fff;
+    }
+
+    .sound-gate {
+      position: fixed;
+      inset: 0;
+      z-index: 40;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.94);
+      gap: 16px;
+      text-align: center;
+      padding: 24px;
+    }
+
+    .sound-gate.hidden {
+      display: none;
+    }
+
+    .sound-gate-copy {
+      font-size: 10px;
+      color: rgba(255,255,255,0.45);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .sound-gate-btn {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.5);
+      color: #fff;
+      padding: 10px 16px;
+      font-family: inherit;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+
+    .sound-gate-btn:hover {
+      border-color: #fff;
+    }
+
+    .sound-gate-btn:focus-visible {
+      outline: 1px solid #fff;
+      outline-offset: 4px;
     }
 
     /* Mobile styles */
@@ -188,21 +287,33 @@
 <body>
   <canvas id="canvas"></canvas>
 
+  <div class="sound-gate" id="soundGate" role="dialog" aria-modal="true" aria-label="Enter with sound">
+    <div class="sound-gate-copy">TRANS III</div>
+    <button id="soundGateBtn" class="sound-gate-btn">ENTER WITH SOUND</button>
+  </div>
+
   <div class="corner-info">
     <div class="title">myungseok oh</div>
   </div>
 
-  <a href="/news/" class="enter-link">enter</a>
-
-  <button class="play-btn" id="playBtn">
+  <button class="play-btn" id="playBtn" aria-label="Play audio playback" aria-pressed="false">
     <div class="play-icon"></div>
   </button>
 
   <div class="time-display" id="timeDisplay">00:00:00:00</div>
 
-  <div class="seekbar" id="seekbar">
-    <div class="seekbar-progress" id="seekbarProgress"></div>
-  </div>
+  <input
+    type="range"
+    class="seekbar"
+    id="seekbar"
+    min="0"
+    max="100"
+    step="1"
+    value="0"
+    aria-label="Audio seek position"
+  />
+
+  <a href="/news/" class="enter-link" id="enterLink">enter</a>
 
   <script>
     // ============================================
@@ -213,7 +324,13 @@
 
     const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
+    const soundGate = document.getElementById('soundGate');
+    const soundGateBtn = document.getElementById('soundGateBtn');
     const playBtn = document.getElementById('playBtn');
+    const seekbar = document.getElementById('seekbar');
+    const enterLink = document.getElementById('enterLink');
+    const SOUND_CONSENT_KEY = 'sound-consent-v1';
+    const NEXT_PAGE_URL = '/news/';
 
     const img = new Image();
     img.src = 'assets/images/Trans3.png';
@@ -245,6 +362,48 @@
     let smoothRms = 0;
     let lastSpawnTime = 0;
 
+    function hasSoundConsent() {
+      try {
+        return localStorage.getItem(SOUND_CONSENT_KEY) === 'granted';
+      } catch (_) {
+        return false;
+      }
+    }
+
+    function setSoundConsent() {
+      try {
+        localStorage.setItem(SOUND_CONSENT_KEY, 'granted');
+      } catch (_) {
+        // Ignore storage restrictions.
+      }
+    }
+
+    function isSoundGateVisible() {
+      return !soundGate.classList.contains('hidden');
+    }
+
+    function showSoundGate() {
+      soundGate.classList.remove('hidden');
+      playBtn.tabIndex = -1;
+      seekbar.tabIndex = -1;
+      enterLink.tabIndex = -1;
+      soundGateBtn.focus();
+    }
+
+    function hideSoundGate() {
+      soundGate.classList.add('hidden');
+      playBtn.tabIndex = 0;
+      seekbar.tabIndex = 0;
+      enterLink.tabIndex = 0;
+      playBtn.focus();
+    }
+
+    function setPlaybackUI(playing) {
+      playBtn.classList.toggle('playing', playing);
+      playBtn.setAttribute('aria-label', playing ? 'Pause audio playback' : 'Play audio playback');
+      playBtn.setAttribute('aria-pressed', String(playing));
+    }
+
     function resize() {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
@@ -273,6 +432,7 @@
     };
 
     async function initAudio() {
+      if (audio) return;
       audio = new Audio();
       audio.src = 'assets/audio/Trans3_Live_Session_web.mp3';
       audio.crossOrigin = 'anonymous';
@@ -322,7 +482,7 @@
       audio.addEventListener('timeupdate', updateTimeDisplay);
       audio.addEventListener('ended', () => {
         isPlaying = false;
-        playBtn.classList.remove('playing');
+        setPlaybackUI(false);
         if (meydaAnalyzer) meydaAnalyzer.stop();
       });
 
@@ -338,7 +498,7 @@
       document.getElementById('timeDisplay').textContent =
         `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}:${String(f).padStart(2,'0')}`;
       if (audio.duration) {
-        document.getElementById('seekbarProgress').style.width = (t / audio.duration * 100) + '%';
+        seekbar.value = String((t / audio.duration) * 100);
       }
     }
 
@@ -355,14 +515,116 @@
         if (meydaAnalyzer) meydaAnalyzer.start();
         isPlaying = true;
       }
-      playBtn.classList.toggle('playing', isPlaying);
+      setPlaybackUI(isPlaying);
     }
 
-    function seek(e) {
+    function seekFromSlider(e) {
       if (!audio || !audio.duration) return;
-      const rect = e.currentTarget.getBoundingClientRect();
-      const ratio = (e.clientX - rect.left) / rect.width;
+      const ratio = Number(e.currentTarget.value) / 100;
       audio.currentTime = ratio * audio.duration;
+    }
+
+    function isArrowSeekKey(e) {
+      return (
+        e.key === 'ArrowLeft' ||
+        e.key === 'ArrowRight' ||
+        e.key === 'Left' ||
+        e.key === 'Right' ||
+        e.keyCode === 37 ||
+        e.keyCode === 39
+      );
+    }
+
+    function isSpaceToggleKey(e) {
+      return e.code === 'Space' || e.key === ' ' || e.key === 'Spacebar' || e.keyCode === 32;
+    }
+
+    function isEnterNavKey(e) {
+      return e.key === 'Enter' || e.keyCode === 13;
+    }
+
+    function shouldIgnoreHotkeys(target) {
+      if (!target) return false;
+      if (target.tagName === 'TEXTAREA' || target.isContentEditable) return true;
+      if (target.tagName === 'INPUT') {
+        return target.type !== 'range';
+      }
+      return false;
+    }
+
+    function seekBySeconds(deltaSeconds) {
+      if (!audio) {
+        initAudio().then(() => seekBySeconds(deltaSeconds));
+        return;
+      }
+      if (!Number.isFinite(audio.currentTime)) return;
+      let next = Math.max(audio.currentTime + deltaSeconds, 0);
+      if (Number.isFinite(audio.duration) && audio.duration > 0) {
+        next = Math.min(next, audio.duration);
+      }
+      audio.currentTime = next;
+      if (Number.isFinite(audio.duration) && audio.duration > 0) {
+        seekbar.value = String((next / audio.duration) * 100);
+      }
+    }
+
+    function onGlobalKeydown(e) {
+      if (e.altKey || e.ctrlKey || e.metaKey) return;
+      if (isSoundGateVisible()) return;
+      if (shouldIgnoreHotkeys(e.target)) return;
+
+      if (isArrowSeekKey(e)) {
+        e.preventDefault();
+        const isLeft = e.key === 'ArrowLeft' || e.key === 'Left' || e.keyCode === 37;
+        seekBySeconds(isLeft ? -5 : 5);
+        return;
+      }
+
+      if (isSpaceToggleKey(e)) {
+        e.preventDefault();
+        togglePlay();
+        return;
+      }
+
+      if (isEnterNavKey(e)) {
+        e.preventDefault();
+        window.location.href = NEXT_PAGE_URL;
+      }
+    }
+
+    function onSeekbarKeydown(e) {
+      if (!isArrowSeekKey(e)) return;
+      e.preventDefault();
+      const isLeft = e.key === 'ArrowLeft' || e.key === 'Left' || e.keyCode === 37;
+      seekBySeconds(isLeft ? -5 : 5);
+    }
+
+    async function tryAutoplay() {
+      try {
+        if (!audioCtx) await initAudio();
+        if (audioCtx.state === 'suspended') {
+          await audioCtx.resume();
+        }
+        await audio.play();
+        if (meydaAnalyzer) meydaAnalyzer.start();
+        isPlaying = true;
+        setPlaybackUI(true);
+        return true;
+      } catch (err) {
+        isPlaying = false;
+        setPlaybackUI(false);
+        return false;
+      }
+    }
+
+    async function enterWithSound() {
+      setSoundConsent();
+      const ok = await tryAutoplay();
+      if (ok) {
+        hideSoundGate();
+        return;
+      }
+      showSoundGate();
     }
 
     // Spawn box based on audio features
@@ -805,10 +1067,21 @@
 
     window.addEventListener('resize', resize);
     playBtn.addEventListener('click', togglePlay);
-    document.getElementById('seekbar').addEventListener('click', seek);
+    seekbar.addEventListener('input', seekFromSlider);
+    window.addEventListener('keydown', onGlobalKeydown, true);
+    seekbar.addEventListener('keydown', onSeekbarKeydown);
+    soundGateBtn.addEventListener('click', enterWithSound);
 
+    setPlaybackUI(false);
     resize();
     draw();
+    showSoundGate();
+
+    if (hasSoundConsent()) {
+      tryAutoplay().then((ok) => {
+        if (ok) hideSoundGate();
+      });
+    }
   </script>
 </body>
 </html>

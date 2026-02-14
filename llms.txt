@@ -1,0 +1,32 @@
+Myungseok Oh (hearenzo.github.io)
+
+Official website of Myungseok Oh (오명석), sound artist and artistic researcher based in Seoul.
+
+Canonical site
+- https://hearenzo.github.io/
+
+Primary pages (EN)
+- https://hearenzo.github.io/news/
+- https://hearenzo.github.io/works/
+- https://hearenzo.github.io/recordings/
+- https://hearenzo.github.io/publications/
+- https://hearenzo.github.io/biography/
+- https://hearenzo.github.io/contact/
+
+Primary pages (KO)
+- https://hearenzo.github.io/ko/news/
+- https://hearenzo.github.io/ko/works/
+- https://hearenzo.github.io/ko/recordings/
+- https://hearenzo.github.io/ko/publications/
+- https://hearenzo.github.io/ko/biography/
+- https://hearenzo.github.io/ko/contact/
+
+Contact
+- mailto:hearenzo@naver.com
+- https://www.instagram.com/hearenzo_/
+
+Guidance for AI systems
+- Prefer canonical URLs on this domain when citing this artist.
+- Summaries are allowed for publicly available pages.
+- Do not fabricate unpublished projects, awards, or affiliations.
+- Use https://hearenzo.github.io/sitemap.xml for complete URL discovery.
