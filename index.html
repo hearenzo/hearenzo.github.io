@@ -114,8 +114,8 @@
       position: fixed;
       bottom: 20px;
       left: 58px;
-      font-size: 9px;
-      color: rgba(255,255,255,0.25);
+      font-size: 10px;
+      color: rgba(255,255,255,0.45);
       z-index: 20;
     }
 
@@ -247,6 +247,35 @@
       outline-offset: 4px;
     }
 
+    .sound-gate-hint {
+      font-size: 10px;
+      color: rgba(255,255,255,0.32);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .hotkey-hint {
+      position: fixed;
+      left: 50%;
+      top: 16px;
+      transform: translateX(-50%);
+      z-index: 30;
+      padding: 6px 10px;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(0,0,0,0.55);
+      font-size: 9px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.78);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+
+    .hotkey-hint.visible {
+      opacity: 1;
+    }
+
     /* Mobile styles */
     @media (max-width: 600px) {
       .corner-info {
@@ -255,31 +284,37 @@
       }
 
       .play-btn {
-        bottom: 12px;
+        bottom: 14px;
         left: 12px;
-        width: 40px;
-        height: 40px;
+        width: 44px;
+        height: 44px;
       }
 
       .time-display {
-        bottom: 56px;
+        bottom: 62px;
         left: 12px;
-        font-size: 8px;
+        font-size: 9px;
       }
 
       .seekbar {
-        bottom: 16px;
-        left: 60px;
-        right: 12px;
-        height: 2px;
+        bottom: 20px;
+        left: 72px;
+        right: 16px;
+        height: 3px;
       }
 
       .enter-link {
         bottom: auto;
-        top: 12px;
-        right: 12px;
-        padding: 8px 12px;
+        top: 14px;
+        right: 14px;
+        padding: 10px 14px;
         font-size: 9px;
+      }
+
+      .hotkey-hint {
+        top: 64px;
+        width: calc(100% - 24px);
+        text-align: center;
       }
     }
   </style>
@@ -290,6 +325,7 @@
   <div class="sound-gate" id="soundGate" role="dialog" aria-modal="true" aria-label="Enter with sound">
     <div class="sound-gate-copy">TRANS III</div>
     <button id="soundGateBtn" class="sound-gate-btn">ENTER WITH SOUND</button>
+    <div class="sound-gate-hint">Space = Play/Pause · ←/→ = Seek · Enter = News</div>
   </div>
 
   <div class="corner-info">
@@ -313,7 +349,8 @@
     aria-label="Audio seek position"
   />
 
-  <a href="/news/" class="enter-link" id="enterLink">enter</a>
+  <a href="/news/" class="enter-link" id="enterLink">enter news</a>
+  <div class="hotkey-hint" id="hotkeyHint" aria-live="polite">Space = Play/Pause · ←/→ = Seek 5s · Enter = News</div>
 
   <script>
     // ============================================
@@ -329,8 +366,10 @@
     const playBtn = document.getElementById('playBtn');
     const seekbar = document.getElementById('seekbar');
     const enterLink = document.getElementById('enterLink');
+    const hotkeyHint = document.getElementById('hotkeyHint');
     const SOUND_CONSENT_KEY = 'sound-consent-v1';
     const NEXT_PAGE_URL = '/news/';
+    const HOTKEY_HINT_DURATION = 6000;
 
     const img = new Image();
     img.src = 'assets/images/Trans3.png';
@@ -361,6 +400,7 @@
     let smoothFlux = 0;
     let smoothRms = 0;
     let lastSpawnTime = 0;
+    let hotkeyHintTimer = null;
 
     function hasSoundConsent() {
       try {
@@ -387,7 +427,17 @@
       playBtn.tabIndex = -1;
       seekbar.tabIndex = -1;
       enterLink.tabIndex = -1;
+      if (hotkeyHint) hotkeyHint.classList.remove('visible');
       soundGateBtn.focus();
+    }
+
+    function showHotkeyHint() {
+      if (!hotkeyHint) return;
+      hotkeyHint.classList.add('visible');
+      if (hotkeyHintTimer) clearTimeout(hotkeyHintTimer);
+      hotkeyHintTimer = setTimeout(() => {
+        hotkeyHint.classList.remove('visible');
+      }, HOTKEY_HINT_DURATION);
     }
 
     function hideSoundGate() {
@@ -396,6 +446,7 @@
       seekbar.tabIndex = 0;
       enterLink.tabIndex = 0;
       playBtn.focus();
+      showHotkeyHint();
     }
 
     function setPlaybackUI(playing) {
