@@ -4,7 +4,15 @@
   "description": "Static site for Myungseok Oh.",
   "private": true,
   "scripts": {
-    "build": "node scripts/minify-css.js",
-    "test": "node scripts/check-links.js"
+    "build:css": "node scripts/minify-css.js",
+    "build:js": "node scripts/bundle-js.js",
+    "build": "npm run build:css && npm run build:js",
+    "test": "node scripts/check-links.js",
+    "preview:build": "node scripts/preview-site.js --build",
+    "preview": "node scripts/preview-site.js --serve"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.3",
+    "liquidjs": "^10.21.1"
   }
 }
