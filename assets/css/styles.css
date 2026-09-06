@@ -1,68 +1,94 @@
-/* Theme variables */
+/* ==========================================================================
+   Myungseok Oh — dark design system
+   The landing page is a black, monospaced, audio-reactive canvas. Everything
+   below carries that language into the document pages: pure black ground,
+   hairline structure, IBM Plex, and colour reserved for the work itself.
+   ========================================================================== */
+
 :root {
+  color-scheme: light;
+
+  /* Ground and ink */
   --bg: #fff;
-  --fg: #000;
-  --muted: #666;
-  --maxw: 1000px;
-  --border: #ddd;
-  --border-light: #eee;
+  --fg: #141414;
+  --fg-strong: #000;
+  --muted: #6b6b6b;
+  --dim: #8f8f8f;
+
+  /* Hairlines — the only structure on this site */
+  --line: rgba(0, 0, 0, 0.14);
+  --line-soft: rgba(0, 0, 0, 0.08);
+  --line-strong: rgba(0, 0, 0, 0.34);
+
+  /* Recessed surfaces */
+  --surface: rgba(0, 0, 0, 0.035);
+  --surface-hover: rgba(0, 0, 0, 0.06);
+
+  /* Glass (nav pills, floating chrome) */
   --glass-fill: rgba(255, 255, 255, 0.72);
-  --glass-edge: rgba(255, 255, 255, 0.96);
-  --glass-shadow: 0 8px 18px rgba(0, 0, 0, 0.04);
+  --glass-edge: rgba(0, 0, 0, 0.12);
+  --glass-shadow: 0 6px 18px rgba(0, 0, 0, 0.07);
+
+  /* Media wells */
+  --well: #f2f2f2;
+
+  /* Back-compat aliases for older rules/markup */
+  --border: var(--line);
+  --border-light: var(--line-soft);
+
+  /* Measure — prose fills the container. Long lines are made readable with
+     size and leading, not by capping the column. */
+  --maxw: 1080px;
+
+  /* Type */
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --sans: "IBM Plex Sans", "IBM Plex Sans KR", system-ui, -apple-system, "Apple SD Gothic Neo",
+    "Noto Sans KR", Arial, sans-serif;
+
+  /* Motion — a single easing so everything moves like one object */
+  --ease: cubic-bezier(0.32, 0.72, 0, 1);
+  --dur: 240ms;
+  --dur-fast: 140ms;
 }
-/* Box sizing reset */
+
+
 * {
   box-sizing: border-box;
 }
 
-/* Remove default margin/padding */
 html,
 body {
   margin: 0;
   padding: 0;
 }
 
-/* Body defaults */
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans KR", Arial, sans-serif;
+  font-family: var(--sans);
   background: var(--bg);
   color: var(--fg);
-  line-height: 1.5;
-  letter-spacing: 0;
-  transition: background 0.3s, color 0.3s;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  font-size: 16px;
+  line-height: 1.8;
+  letter-spacing: -0.005em;
 }
 
-/* Links */
-a {
-  color: var(--fg);
-  text-decoration: none;
-  border-bottom: 1px solid transparent;
-  transition: border-color 0.15s ease;
+::selection {
+  background: rgba(0, 0, 0, 0.85);
+  color: #fff;
 }
 
-a:hover {
-  border-bottom-color: var(--fg);
+:focus-visible {
+  outline: 2px solid var(--fg-strong);
+  outline-offset: 3px;
 }
 
-/* Heading links - use transparent border for smooth transition */
-h1 a,
-h2 a,
-h3 a {
-  border-bottom: 1px solid transparent;
-}
+/* --------------------------------------------------------------------------
+   Layout
+   -------------------------------------------------------------------------- */
 
-h1 a:hover,
-h2 a:hover,
-h3 a:hover {
-  border-bottom-color: var(--fg);
-}
-
-/* External links (social media) */
-/* Optional: Add specific styling for external links if needed */
-
-/* Layout */
 header,
 main,
 footer {
@@ -72,16 +98,80 @@ footer {
 .container {
   max-width: var(--maxw);
   margin: 0 auto;
-  padding: 24px 16px;
+  padding: 0 32px;
 }
 
-@media (max-width: 600px) {
+main.container {
+  padding-top: 56px;
+  padding-bottom: 96px;
+}
+
+@media (max-width: 700px) {
   .container {
-    padding: 20px 12px;
+    padding: 0 20px;
+  }
+
+  main.container {
+    padding-top: 36px;
+    padding-bottom: 64px;
   }
 }
 
-/* Navigation */
+/* --------------------------------------------------------------------------
+   Header — sticky, with a scroll-edge fade instead of a hard divider
+   -------------------------------------------------------------------------- */
+
+header.container {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  padding-top: 22px;
+  padding-bottom: 14px;
+  max-width: none;
+  background: linear-gradient(
+    to bottom,
+    #fff 0%,
+    #fff 62%,
+    rgba(255, 255, 255, 0.88) 82%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
+header.container > * {
+  max-width: var(--maxw);
+  margin-inline: auto;
+}
+
+header h1 {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 14px;
+}
+
+header h1 a {
+  color: inherit;
+  border-bottom: 0;
+  transition: color var(--dur-fast) var(--ease);
+}
+
+header h1 a:hover {
+  color: var(--fg-strong);
+  border-bottom: 0;
+}
+
+/* The old markup ends the header with an <hr>; the gradient replaces it. */
+header hr {
+  display: none;
+}
+
+/* --------------------------------------------------------------------------
+   Navigation
+   -------------------------------------------------------------------------- */
+
 nav ul {
   list-style: none;
   padding: 0;
@@ -89,284 +179,398 @@ nav ul {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 16px;
+  gap: 4px;
 }
 
-nav a {
+nav a,
+.lang-btn {
   display: inline-flex;
   align-items: center;
-  min-height: 28px;
-  padding: 0 9px;
+  min-height: 30px;
+  padding: 0 11px;
   border: 1px solid transparent;
   border-radius: 999px;
-  text-transform: lowercase;
-  font-size: 13px;
-  letter-spacing: 0;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease),
+    border-color var(--dur-fast) var(--ease);
 }
 
-/* Language switcher */
+nav a:hover,
+.lang-btn:hover {
+  color: var(--fg-strong);
+  background: var(--surface);
+  border-color: var(--line-soft);
+  border-bottom-color: var(--line-soft);
+}
+
+nav a[aria-current="page"],
+.lang-btn.active {
+  color: var(--fg-strong);
+  background: var(--glass-fill);
+  border-color: var(--glass-edge);
+}
+
+@supports ((backdrop-filter: blur(12px)) or (-webkit-backdrop-filter: blur(12px))) {
+  nav a[aria-current="page"],
+  .lang-btn.active {
+    background: var(--glass-fill);
+    box-shadow: var(--glass-shadow);
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(130%);
+  }
+}
+
 .lang-switcher {
   margin-left: auto;
   display: flex;
   align-items: center;
-  gap: 4px;
-}
-
-.lang-btn {
-  background: none;
-  border: 1px solid transparent;
-  color: var(--fg);
-  font-size: 13px;
-  text-transform: lowercase;
-  cursor: pointer;
-  padding: 0 8px;
-  min-height: 28px;
-  display: inline-flex;
-  align-items: center;
-  font-family: inherit;
-  letter-spacing: 0;
-  transition: border-color 0.15s ease;
-  text-decoration: none;
-  border-radius: 999px;
-}
-
-nav a:hover,
-nav a[aria-current="page"],
-.lang-btn:hover,
-.lang-btn.active {
-  border-bottom-color: transparent;
-  border-color: rgba(220, 220, 220, 0.95);
-  background: var(--glass-fill);
-  box-shadow: var(--glass-shadow);
-}
-
-@supports ((backdrop-filter: blur(12px)) or (-webkit-backdrop-filter: blur(12px))) {
-  nav a:hover,
-  nav a[aria-current="page"],
-  .lang-btn:hover,
-  .lang-btn.active {
-    background: rgba(255, 255, 255, 0.58);
-    border-color: var(--glass-edge);
-    backdrop-filter: blur(12px) saturate(140%);
-    -webkit-backdrop-filter: blur(12px) saturate(140%);
-  }
-}
-
-.lang-btn.active {
-  font-weight: 500;
+  gap: 2px;
 }
 
 .lang-separator {
-  color: var(--muted);
-  font-size: 11px;
-  margin: 0 2px;
+  color: var(--dim);
+  font-family: var(--mono);
+  font-size: 10px;
 }
 
-/* Horizontal rule */
-hr {
-  border: 0;
-  border-top: 1px solid var(--border);
-  margin: 24px 0;
+@media (max-width: 700px) {
+  nav ul {
+    gap: 2px;
+  }
+
+  nav a,
+  .lang-btn {
+    padding: 0 8px;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+  }
+
+  .lang-switcher {
+    margin-left: 0;
+  }
 }
 
-/* Headings */
+/* --------------------------------------------------------------------------
+   Typography
+   Tracking is size-specific: large type tightens, small type opens up.
+   -------------------------------------------------------------------------- */
+
 h1,
 h2,
-h3 {
-  font-weight: 400;
+h3,
+h4 {
   margin: 0;
-  letter-spacing: 0;
-}
-
-h1 {
-  font-size: 18px;
-  margin-bottom: 12px;
-}
-
-h2 {
-  font-size: 16px;
-  margin-top: 24px;
-  margin-bottom: 12px;
   font-weight: 400;
 }
 
-h3 {
-  font-size: 14px;
-  margin-top: 20px;
-  margin-bottom: 8px;
+/* Page title — the one big piece of type on each page */
+main h2 {
+  font-size: clamp(30px, 5vw, 44px);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  color: var(--fg-strong);
+  margin: 0 0 8px;
+}
+
+/* Section label */
+main h3 {
+  font-family: var(--mono);
+  font-size: 10px;
   font-weight: 400;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin: 56px 0 18px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--line-soft);
 }
 
-/* Lists */
-.list {
-  margin: 8px 0 0;
-  padding: 0;
-  list-style: none;
-  width: 100%;
-  max-width: none;
+main h3:first-of-type {
+  margin-top: 40px;
 }
 
-.list li {
-  margin: 6px 0;
-  line-height: 1.6;
+main h4 {
+  font-size: 15px;
+  letter-spacing: -0.01em;
+  color: var(--fg-strong);
+  margin: 28px 0 6px;
 }
 
-.meta {
-  display: inline-block;
-  color: var(--muted);
-  font-size: 11px;
-  margin-left: 8px;
-  font-weight: 400;
-  letter-spacing: 0.04em;
-  font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
-  font-variant-numeric: tabular-nums;
-}
-
-.pretext-note {
-  margin: 6px 0 18px;
-  padding: 10px 14px 12px;
-  border: 1px solid #efefef;
-  border-radius: 18px;
-  background: rgba(255, 255, 255, 0.92);
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.035);
-  width: fit-content;
-  max-width: 100%;
-}
-
-.pretext-note[hidden] {
-  display: none;
-}
-
-.pretext-note__row {
-  display: flex;
-  align-items: baseline;
-  flex-wrap: nowrap;
-  white-space: nowrap;
-}
-
-.pretext-note__row + .pretext-note__row {
-  margin-top: 4px;
-}
-
-.pretext-frag {
-  display: inline-block;
-  white-space: pre;
+a {
   color: var(--fg);
-  font: 500 13px/1.35 "Helvetica Neue", Helvetica, Arial, sans-serif;
+  text-decoration: none;
+  border-bottom: 1px solid var(--line-strong);
+  transition: color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
 }
 
-.pretext-frag--muted {
-  color: var(--muted);
+a:hover {
+  color: var(--fg-strong);
+  border-bottom-color: var(--fg-strong);
 }
 
-.pretext-frag--accent {
-  letter-spacing: 0.03em;
+h1 a,
+h2 a,
+h3 a,
+h4 a {
+  border-bottom: 1px solid transparent;
 }
 
-.pretext-chip {
-  display: inline-flex;
-  align-items: center;
-  min-height: 20px;
-  padding: 0 8px;
-  border: 1px solid #e9e9e9;
-  border-radius: 999px;
-  background: rgba(248, 248, 248, 0.96);
-  color: #4d4d4d;
-  font: 600 10px/1 "SF Mono", ui-monospace, Menlo, Monaco, monospace;
-  letter-spacing: 0.04em;
-  text-transform: lowercase;
-  transform: translateY(-1px);
+h1 a:hover,
+h2 a:hover,
+h3 a:hover,
+h4 a:hover {
+  border-bottom-color: currentColor;
 }
 
-.pretext-chip--note {
-  background: rgba(243, 243, 243, 0.98);
-}
-
-.pretext-chip--cue {
-  background: rgba(250, 250, 250, 0.98);
-}
-
-.pretext-chip--pulse {
-  background: rgba(246, 246, 246, 0.98);
-}
-
-/* Footer */
-.footer {
-  color: var(--muted);
-  font-size: 11px;
-  padding: 24px 16px;
-  border-top: 1px solid var(--border-light);
-  text-align: center;
-  letter-spacing: 0;
-}
-
-@media (max-width: 600px) {
-  .footer {
-    padding: 20px 12px;
-  }
-
-  .pretext-note {
-    width: 100%;
-    padding: 10px 12px 12px;
-    border-radius: 16px;
-  }
-
-  .pretext-frag {
-    font-size: 12px;
-  }
-
-}
-
-/* Paragraph spacing */
+/* Body copy — ranged left, full width of its container */
 .container p {
-  margin: 0 0 12px;
-  line-height: 1.62;
-  font-size: 14px;
+  margin: 0 0 20px;
+  line-height: 1.85;
 }
 
 main.container > p:not(.meta) {
-  width: 100%;
-  text-align: justify;
-  text-align-last: left;
-  text-justify: inter-word;
-  hyphens: auto;
-  -webkit-hyphens: auto;
+  text-align: left;
+  hyphens: manual;
+  -webkit-hyphens: manual;
 }
 
 .container p:last-child {
   margin-bottom: 0;
 }
 
-/* Responsive video embeds */
+strong {
+  font-weight: 500;
+  color: var(--fg-strong);
+}
+
+/* Metadata — monospace, tabular, quiet */
+.meta {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  font-variant-numeric: tabular-nums;
+  color: var(--dim);
+}
+
+p.meta {
+  margin: 0 0 28px;
+  text-transform: uppercase;
+}
+
+.list .meta {
+  margin-left: 10px;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid var(--line-soft);
+  margin: 48px 0;
+}
+
+/* --------------------------------------------------------------------------
+   Lists
+   -------------------------------------------------------------------------- */
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.list li {
+  margin: 0;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--line-soft);
+  line-height: 1.55;
+}
+
+.list li:last-child {
+  border-bottom: 0;
+}
+
+.list a {
+  border-bottom: 1px solid transparent;
+}
+
+.list a:hover {
+  border-bottom-color: var(--line-strong);
+}
+
+/* Nested detail under a list row — used for work done inside a role, so the
+   items read as part of that job rather than as standalone credits. */
+.sublist {
+  list-style: none;
+  margin: 10px 0 2px;
+  padding: 0 0 0 18px;
+  border-left: 1px solid var(--line-soft);
+}
+
+.sublist li {
+  margin: 0;
+  padding: 5px 0;
+  border-bottom: 0;
+  line-height: 1.5;
+}
+
+.sublist .meta {
+  display: block;
+  margin-left: 0;
+  margin-top: 3px;
+}
+
+/* Catalogue rows: the metadata always sits on its own line, so entries line
+   up regardless of how long the title is. */
+.list--stacked .meta {
+  display: block;
+  margin-left: 0;
+  margin-top: 5px;
+}
+
+/* --------------------------------------------------------------------------
+   Works grid — the work leads, the text follows
+   Thumbnails are desaturated at rest so twelve unrelated frames read as one
+   set; colour returns on hover, which is also the affordance.
+   -------------------------------------------------------------------------- */
+
+.work-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 40px 28px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.work-item {
+  margin: 0;
+}
+
+.work-item a {
+  display: block;
+  border-bottom: 0;
+  color: inherit;
+}
+
+.work-item a:hover {
+  border-bottom: 0;
+}
+
+.work-thumb {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--well);
+  border: 1px solid var(--line-soft);
+  transition: border-color var(--dur) var(--ease);
+}
+
+.work-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: grayscale(1) contrast(1.02);
+  transform: scale(1.001);
+  transition: filter 400ms var(--ease), transform 500ms var(--ease);
+}
+
+.work-item a:hover .work-thumb,
+.work-item a:focus-visible .work-thumb {
+  border-color: var(--line-strong);
+}
+
+.work-item a:hover .work-thumb img,
+.work-item a:focus-visible .work-thumb img {
+  filter: grayscale(0) contrast(1);
+  transform: scale(1.04);
+}
+
+.work-caption {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 14px;
+  padding-bottom: 2px;
+}
+
+.work-title {
+  font-size: 16px;
+  line-height: 1.35;
+  letter-spacing: -0.015em;
+  color: var(--fg-strong);
+  margin: 0;
+  max-width: none;
+}
+
+.work-year {
+  flex: none;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.08em;
+  color: var(--dim);
+}
+
+.work-kind {
+  display: block;
+  margin-top: 3px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+  max-width: none;
+}
+
+@media (max-width: 700px) {
+  .work-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Media embeds
+   -------------------------------------------------------------------------- */
+
 .video-container {
-  margin: 12px 0;
+  margin: 28px 0 32px;
   position: relative;
   width: 100%;
+  border: 1px solid var(--line-soft);
+  background: var(--well);
 }
 
 .video-container iframe {
   width: 100%;
   aspect-ratio: 16 / 9;
   display: block;
+  border: 0;
 }
 
-/* Strudel iframe */
 .strudel-container {
   width: 100%;
-  height: auto;
   min-height: 420px;
-  border: 0;
-  margin: 4px 0;
+  border: 1px solid var(--line-soft);
+  margin: 24px 0;
 }
 
-/* News videos list */
+/* News */
+
 .news-videos-list {
-  margin: 32px 0 48px;
+  margin: 32px 0 0;
   padding: 0;
 }
 
 .news-video-item {
-  margin-bottom: 64px;
+  margin-bottom: 72px;
 }
 
 .news-video-item:last-child {
@@ -374,75 +578,32 @@ main.container > p:not(.meta) {
 }
 
 .news-video-item .video-container {
-  margin: 0 0 24px 0;
-  max-width: 100%;
+  margin: 0 0 20px;
 }
 
 .video-caption-wrapper {
   width: 100%;
-  max-width: none;
   margin: 0;
 }
 
 .video-caption {
-  font-size: 13px;
-  color: var(--fg);
-  line-height: 1.7;
+  font-size: 15px;
+  color: var(--muted);
+  line-height: 1.85;
   margin: 0;
-  font-weight: 400;
-  letter-spacing: 0.01em;
-  text-align: justify;
-  text-align-last: left;
-  text-justify: inter-word;
-  hyphens: auto;
-  -webkit-hyphens: auto;
+  text-align: left;
+  hyphens: manual;
+  -webkit-hyphens: manual;
 }
 
-@media (max-width: 600px) {
-  .news-videos-list {
-    margin: 24px 0 40px;
-  }
-  
-  .news-video-item {
-    margin-bottom: 48px;
-  }
-  
-  .news-video-item .video-container {
-    margin-bottom: 20px;
-  }
-  
-  .video-caption {
-    font-size: 12px;
-    line-height: 1.6;
-    text-align: left;
-    hyphens: manual;
-    -webkit-hyphens: manual;
-  }
-}
+/* Recordings */
 
-/* Recordings grid */
 .recordings-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 24px;
-  margin: 16px 0 32px;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 32px 28px;
+  margin: 0;
   padding: 0;
-}
-
-@media (max-width: 600px) {
-  .recordings-grid {
-    grid-template-columns: 1fr;
-    gap: 20px;
-    margin: 12px 0 24px;
-  }
-}
-
-@media (max-width: 600px) {
-  main.container > p:not(.meta) {
-    text-align: left;
-    hyphens: manual;
-    -webkit-hyphens: manual;
-  }
 }
 
 .recording-item {
@@ -453,55 +614,193 @@ main.container > p:not(.meta) {
 .recording-item iframe {
   width: 100%;
   display: block;
+  border: 0;
 }
 
-/* SoundCloud credits */
 .sc-credits {
-  font-size: 11px;
-  color: var(--muted);
-  margin-top: 8px;
-  letter-spacing: 0.03em;
-  font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--dim);
+  margin-top: 10px;
 }
 
 .sc-credits a {
-  color: var(--muted);
-  text-decoration: none;
+  color: var(--dim);
   border-bottom: 1px solid transparent;
 }
 
 .sc-credits a:hover {
-  border-bottom-color: var(--muted);
+  color: var(--fg);
+  border-bottom-color: var(--line-strong);
 }
 
-/* Works grid */
-.work-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 16px;
-  margin: 16px 0 0;
-  padding: 0;
+@media (max-width: 700px) {
+  .recordings-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .news-video-item {
+    margin-bottom: 52px;
+  }
+
+  .video-caption {
+    font-size: 13px;
+  }
 }
 
-.work-item a {
-  display: block;
+/* --------------------------------------------------------------------------
+   Back link and footer
+   -------------------------------------------------------------------------- */
+
+.back-link,
+main.container > p > a[href$="/works/"] {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
 }
 
-.work-item img,
-.work-item video {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-.work-item p {
-  margin: 6px 0 0;
-  font-size: 13px;
-}
-
-/* Back link styling - can be added via class if needed */
 .back-link {
   display: inline-block;
-  margin-top: 24px;
-  font-size: 14px;
+  margin-top: 40px;
+}
+
+.footer {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--dim);
+  padding: 32px;
+  border-top: 1px solid var(--line-soft);
+  text-align: center;
+}
+
+/* --------------------------------------------------------------------------
+   Entrance
+   A short, one-shot settle on load. Everything here is opacity + transform
+   only, and all of it is removed under reduced-motion.
+   -------------------------------------------------------------------------- */
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+main.container > * {
+  animation: rise 520ms var(--ease) backwards;
+}
+
+main.container > *:nth-child(1) {
+  animation-delay: 0ms;
+}
+main.container > *:nth-child(2) {
+  animation-delay: 40ms;
+}
+main.container > *:nth-child(3) {
+  animation-delay: 80ms;
+}
+main.container > *:nth-child(4) {
+  animation-delay: 120ms;
+}
+main.container > *:nth-child(n + 5) {
+  animation-delay: 150ms;
+}
+
+/* Grid items settle in sequence — the works page is the one moment on the
+   site that earns a stagger. */
+.work-grid .work-item {
+  animation: rise 560ms var(--ease) backwards;
+}
+
+.work-grid .work-item:nth-child(1) { animation-delay: 120ms; }
+.work-grid .work-item:nth-child(2) { animation-delay: 165ms; }
+.work-grid .work-item:nth-child(3) { animation-delay: 210ms; }
+.work-grid .work-item:nth-child(4) { animation-delay: 255ms; }
+.work-grid .work-item:nth-child(n + 5) { animation-delay: 290ms; }
+
+/* --------------------------------------------------------------------------
+   Korean
+   The wide tracking above is tuned for uppercase Latin. Hangul has no case
+   and its glyphs already carry their own side bearings, so the same values
+   read as gaps between syllables. Tighten them on the Korean pages.
+   -------------------------------------------------------------------------- */
+
+html[lang^="ko"] main h3,
+html[lang^="ko"] .work-kind,
+html[lang^="ko"] p.meta,
+html[lang^="ko"] .footer {
+  letter-spacing: 0.06em;
+}
+
+html[lang^="ko"] .list .meta,
+html[lang^="ko"] .work-year {
+  letter-spacing: 0.04em;
+}
+
+html[lang^="ko"] .container p {
+  word-break: keep-all;
+}
+
+/* --------------------------------------------------------------------------
+   Accessibility preferences
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .work-item a:hover .work-thumb img,
+  .work-item a:focus-visible .work-thumb img {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  nav a[aria-current="page"],
+  .lang-btn.active {
+    background: #f0f0f0;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  header.container {
+    background: #fff;
+    border-bottom: 1px solid var(--line-soft);
+  }
+}
+
+@media (prefers-contrast: more) {
+  :root {
+    --fg: #000;
+    --muted: #3d3d3d;
+    --dim: #4f4f4f;
+    --line: rgba(0, 0, 0, 0.4);
+    --line-soft: rgba(0, 0, 0, 0.26);
+    --line-strong: rgba(0, 0, 0, 0.7);
+  }
+
+  .work-thumb img {
+    filter: none;
+  }
 }
