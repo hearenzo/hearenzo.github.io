@@ -210,7 +210,46 @@ function startServer() {
       return;
     }
 
-    res.writeHead(200, { 'Content-Type': getContentType(filePath) });
+    // Serve byte ranges. Without this the browser reports the audio as
+    // unseekable (seekable = [0,0]) and every seek snaps back to 0, which
+    // looks exactly like broken seek hotkeys when it is only the dev server.
+    const contentType = getContentType(filePath);
+    const size = fs.statSync(filePath).size;
+    const range = req.headers.range;
+    const match = range && /^bytes=(\d*)-(\d*)$/.exec(range.trim());
+
+    if (match) {
+      let start = match[1] === '' ? null : Number(match[1]);
+      let end = match[2] === '' ? null : Number(match[2]);
+
+      if (start === null && end !== null) {
+        start = Math.max(0, size - end);
+        end = size - 1;
+      } else if (start !== null) {
+        if (end === null || end >= size) end = size - 1;
+      }
+
+      if (start === null || start > end || start >= size) {
+        res.writeHead(416, { 'Content-Range': `bytes */${size}` });
+        res.end();
+        return;
+      }
+
+      res.writeHead(206, {
+        'Content-Type': contentType,
+        'Content-Length': end - start + 1,
+        'Content-Range': `bytes ${start}-${end}/${size}`,
+        'Accept-Ranges': 'bytes'
+      });
+      fs.createReadStream(filePath, { start, end }).pipe(res);
+      return;
+    }
+
+    res.writeHead(200, {
+      'Content-Type': contentType,
+      'Content-Length': size,
+      'Accept-Ranges': 'bytes'
+    });
     fs.createReadStream(filePath).pipe(res);
   });
 

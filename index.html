@@ -43,10 +43,13 @@
   }
   </script>
 
-  <script src="https://unpkg.com/meyda@5.6.3/dist/web/meyda.min.js"></script>
+  <meta name="color-scheme" content="dark" />
+  <meta name="theme-color" content="#000000" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400&display=swap" />
+  <script src="/assets/js/lib/meyda.min.js"></script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400&display=swap');
-
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
@@ -325,7 +328,7 @@
   <div class="sound-gate" id="soundGate" role="dialog" aria-modal="true" aria-label="Enter with sound">
     <div class="sound-gate-copy">TRANS III</div>
     <button id="soundGateBtn" class="sound-gate-btn">ENTER WITH SOUND</button>
-    <div class="sound-gate-hint">Space = Play/Pause · ←/→ = Seek · Enter = News</div>
+    <div class="sound-gate-hint">Press SPACE or ENTER to begin</div>
   </div>
 
   <div class="corner-info">
@@ -565,6 +568,7 @@
         await audio.play();
         if (meydaAnalyzer) meydaAnalyzer.start();
         isPlaying = true;
+        kickLoop();
       }
       setPlaybackUI(isPlaying);
     }
@@ -621,8 +625,18 @@
 
     function onGlobalKeydown(e) {
       if (e.altKey || e.ctrlKey || e.metaKey) return;
-      if (isSoundGateVisible()) return;
       if (shouldIgnoreHotkeys(e.target)) return;
+
+      if (isSoundGateVisible()) {
+        // Nothing to seek or toggle yet — but SPACE/ENTER must open the gate
+        // even when focus has drifted off the button (e.g. a click on the
+        // canvas), otherwise the keyboard is dead with no way back.
+        if (!e.repeat && (isSpaceToggleKey(e) || isEnterNavKey(e))) {
+          e.preventDefault();
+          enterWithSound();
+        }
+        return;
+      }
 
       if (isArrowSeekKey(e)) {
         e.preventDefault();
@@ -659,6 +673,7 @@
         await audio.play();
         if (meydaAnalyzer) meydaAnalyzer.start();
         isPlaying = true;
+        kickLoop();
         setPlaybackUI(true);
         return true;
       } catch (err) {
@@ -857,12 +872,31 @@
       }
     }
 
+    // Respect prefers-reduced-motion: the canvas holds a single still frame
+    // and only animates while the visitor has explicitly started playback.
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let rafId = null;
+
+    function scheduleFrame() {
+      if (reduceMotion.matches && !isPlaying) {
+        rafId = null;
+        return;
+      }
+      rafId = requestAnimationFrame(draw);
+    }
+
+    function kickLoop() {
+      if (rafId === null) rafId = requestAnimationFrame(draw);
+    }
+
     function draw() {
       ctx.fillStyle = '#000';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       if (!img.width) {
-        requestAnimationFrame(draw);
+        // Still waiting on the image — this is not motion, so keep polling
+        // even under reduced-motion, or the canvas would stay blank forever.
+        rafId = requestAnimationFrame(draw);
         return;
       }
 
@@ -1113,9 +1147,10 @@
 
       time++;
       frame++;
-      requestAnimationFrame(draw);
+      scheduleFrame();
     }
 
+    reduceMotion.addEventListener('change', kickLoop);
     window.addEventListener('resize', resize);
     playBtn.addEventListener('click', togglePlay);
     seekbar.addEventListener('input', seekFromSlider);

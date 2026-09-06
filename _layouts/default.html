@@ -21,19 +21,25 @@
   <link rel="alternate" hreflang="en" href="https://hearenzo.github.io{{ en_url }}" />
   <link rel="alternate" hreflang="ko" href="https://hearenzo.github.io{{ ko_url }}" />
   <link rel="alternate" hreflang="x-default" href="https://hearenzo.github.io{{ en_url }}" />
+  <meta name="color-scheme" content="light" />
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Sans+KR:wght@400;500&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Sans+KR:wght@400;500&display=swap" />
   <link rel="stylesheet" href="/assets/css/styles.min.css" />
   <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml" />
   <meta property="og:site_name" content="Myungseok Oh" />
   <meta property="og:locale" content="{{ locale }}" />
   <meta property="og:title" content="{{ page.title }}" />
   <meta property="og:description" content="{{ page.description }}" />
-  <meta property="og:image" content="{% if page.og_image %}{{ page.og_image }}{% else %}https://hearenzo.github.io/assets/img/og.svg{% endif %}" />
+  <meta property="og:image" content="{% if page.og_image %}{{ page.og_image }}{% else %}https://hearenzo.github.io/assets/img/og.png{% endif %}" />
   <meta property="og:url" content="{{ canonical_url }}" />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="{{ page.title }}" />
   <meta name="twitter:description" content="{{ page.description }}" />
-  <meta name="twitter:image" content="{% if page.og_image %}{{ page.og_image }}{% else %}https://hearenzo.github.io/assets/img/og.svg{% endif %}" />
+  <meta name="twitter:image" content="{% if page.og_image %}{{ page.og_image }}{% else %}https://hearenzo.github.io/assets/img/og.png{% endif %}" />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -69,6 +75,5 @@
   </main>
   {% include footer.html %}
   <script src="/assets/js/lang-switcher.js"></script>
-  <script type="module" src="/assets/js/pretext-notes.js"></script>
 </body>
 </html>

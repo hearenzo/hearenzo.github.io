@@ -160,6 +160,13 @@ function buildNoteRows(lines) {
   return fragment;
 }
 
+function measureContentWidth(el) {
+  if (!el) return document.documentElement.clientWidth;
+  const cs = getComputedStyle(el);
+  const pad = parseFloat(cs.paddingLeft || '0') + parseFloat(cs.paddingRight || '0');
+  return Math.max(0, el.clientWidth - pad);
+}
+
 function renderNote(node) {
   const key = node.dataset.pretextNote;
   const lang = getLang();
@@ -170,8 +177,16 @@ function renderNote(node) {
     return;
   }
 
-  const parentWidth = node.parentElement?.clientWidth ?? document.documentElement.clientWidth;
-  const availableWidth = Math.max(MIN_NOTE_WIDTH, Math.min(MAX_NOTE_WIDTH, parentWidth - 16));
+  // clientWidth includes the parent's padding, which the note cannot use.
+  const parentWidth = measureContentWidth(node.parentElement);
+  // The rendered note is availableWidth + NOTE_CHROME_WIDTH, so the chrome has
+  // to come out of the budget here — subtracting less overflowed the viewport
+  // on narrow screens. The floor is also capped to what the parent can hold.
+  const contentBudget = parentWidth - NOTE_CHROME_WIDTH;
+  const availableWidth = Math.max(
+    Math.min(MIN_NOTE_WIDTH, contentBudget),
+    Math.min(MAX_NOTE_WIDTH, contentBudget)
+  );
   const { lines, widestLine } = layoutPreparedNote(prepared, availableWidth);
 
   if (lines.length === 0) {
@@ -182,7 +197,12 @@ function renderNote(node) {
   node.hidden = false;
   node.textContent = '';
   node.appendChild(buildNoteRows(lines));
-  node.style.width = `${Math.min(availableWidth + NOTE_CHROME_WIDTH, Math.ceil(widestLine) + NOTE_CHROME_WIDTH)}px`;
+  const noteWidth = Math.min(
+    parentWidth,
+    availableWidth + NOTE_CHROME_WIDTH,
+    Math.ceil(widestLine) + NOTE_CHROME_WIDTH
+  );
+  node.style.width = `${noteWidth}px`;
 }
 
 function renderAll() {

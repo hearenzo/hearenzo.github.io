@@ -2,3 +2,5 @@ node_modules/
 .preview/
 .bundle/
 /vendor/
+.DS_Store
+**/.DS_Store
