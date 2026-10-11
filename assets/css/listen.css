@@ -1,0 +1,269 @@
+/* ==========================================================================
+   Listen pages — /listen/<slug>/
+   Single-track landing pages reached by QR code. They carry the landing
+   page's language (black ground, IBM Plex Mono, hairlines) and do one thing:
+   get the track playing with as few taps as possible.
+   ========================================================================== */
+
+:root {
+  color-scheme: dark;
+
+  --bg: #000;
+  --fg: #fff;
+  --muted: rgba(255, 255, 255, 0.45);
+  --dim: rgba(255, 255, 255, 0.3);
+  --line: rgba(255, 255, 255, 0.2);
+  --line-strong: rgba(255, 255, 255, 0.5);
+
+  /* Read by listen.js when drawing the waveform */
+  --wave-rest: rgba(255, 255, 255, 0.22);
+  --wave-played: #fff;
+
+  --mono: "IBM Plex Mono", "IBM Plex Sans KR", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --ease: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--mono);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+::selection {
+  background: #fff;
+  color: #000;
+}
+
+:focus-visible {
+  outline: 1px solid #fff;
+  outline-offset: 4px;
+}
+
+.listen {
+  min-height: 100vh;
+  min-height: 100svh;
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 72px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Corners --------------------------------------------------------------- */
+
+.listen-artist,
+.listen-more {
+  position: fixed;
+  z-index: 10;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--muted);
+  transition: color 0.3s ease, border-color 0.3s ease;
+}
+
+.listen-artist {
+  top: max(16px, env(safe-area-inset-top));
+  left: 16px;
+}
+
+.listen-more {
+  bottom: max(16px, env(safe-area-inset-bottom));
+  right: 16px;
+  padding: 6px 10px;
+  border: 1px solid var(--line);
+}
+
+.listen-more::before {
+  content: "[ ";
+  opacity: 0.6;
+}
+
+.listen-more::after {
+  content: " ]";
+  opacity: 0.6;
+}
+
+.listen-artist:hover,
+.listen-more:hover {
+  color: rgba(255, 255, 255, 0.9);
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
+/* Title ----------------------------------------------------------------- */
+
+.listen-kicker,
+.listen-meta,
+.listen-hint,
+.listen-status {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.listen-title {
+  margin: 14px 0 16px;
+  font-size: clamp(44px, 11vw, 104px);
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  word-break: keep-all;
+}
+
+/* Hangul titles: set the whole line in Plex Sans KR so the word space
+   isn't Plex Mono's full-width one. */
+.listen-title:lang(ko) {
+  font-family: "IBM Plex Sans KR", var(--mono);
+  letter-spacing: -0.03em;
+}
+
+/* Play ------------------------------------------------------------------ */
+
+.listen-controls {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin: 52px 0 32px;
+}
+
+.listen-play {
+  flex: none;
+  width: 88px;
+  height: 88px;
+  display: grid;
+  place-items: center;
+  background: transparent;
+  border: 1px solid var(--line-strong);
+  color: inherit;
+  cursor: pointer;
+  transition: border-color 0.24s var(--ease), background-color 0.24s var(--ease);
+}
+
+.listen-play:hover {
+  border-color: #fff;
+}
+
+.listen-play:active {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.listen-icon {
+  width: 0;
+  height: 0;
+  margin-left: 4px;
+  border-left: 18px solid #fff;
+  border-top: 11px solid transparent;
+  border-bottom: 11px solid transparent;
+}
+
+[data-state="playing"] .listen-play,
+[data-state="loading"] .listen-play {
+  border-color: #fff;
+}
+
+[data-state="playing"] .listen-icon,
+[data-state="loading"] .listen-icon {
+  width: 18px;
+  height: 22px;
+  margin-left: 0;
+  border: 0;
+  background: linear-gradient(90deg, #fff 0 35%, transparent 35% 65%, #fff 65% 100%);
+}
+
+/* Autoplay was refused: invite the one tap the browser needs. */
+[data-state="ready"] .listen-play {
+  animation: listen-breathe 2.4s var(--ease) infinite;
+}
+
+@keyframes listen-breathe {
+  0%,
+  100% {
+    border-color: var(--line-strong);
+  }
+  50% {
+    border-color: #fff;
+  }
+}
+
+.listen-hint {
+  transition: opacity 0.4s ease;
+}
+
+.listen[data-started] .listen-hint {
+  opacity: 0;
+}
+
+/* Waveform -------------------------------------------------------------- */
+
+.listen-wave {
+  height: 96px;
+  cursor: pointer;
+  touch-action: none;
+}
+
+.listen-wave canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.listen-time {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.listen-status {
+  min-height: 1.6em;
+  margin-top: 20px;
+  color: var(--dim);
+}
+
+/* Mobile ---------------------------------------------------------------- */
+
+@media (max-width: 600px) {
+  .listen {
+    padding: 64px 20px 88px;
+  }
+
+  .listen-controls {
+    margin: 40px 0 28px;
+  }
+
+  .listen-play {
+    width: 76px;
+    height: 76px;
+  }
+
+  .listen-wave {
+    height: 80px;
+  }
+
+  .listen-more {
+    padding: 10px 14px;
+    font-size: 9px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-state="ready"] .listen-play {
+    animation: none;
+    border-color: #fff;
+  }
+}
