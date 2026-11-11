@@ -13,7 +13,7 @@
   --fg: #141414;
   --fg-strong: #000;
   --muted: #6b6b6b;
-  --dim: #8f8f8f;
+  --dim: #767676;
 
   /* Hairlines — the only structure on this site */
   --line: rgba(0, 0, 0, 0.14);
@@ -253,6 +253,12 @@ nav a[aria-current="page"],
   .lang-switcher {
     margin-left: 0;
   }
+
+  /* The menu wraps to two rows here; pinned, it would cover a sixth of the
+     screen, so on phones it scrolls away with the page. */
+  header.container {
+    position: static;
+  }
 }
 
 /* --------------------------------------------------------------------------
@@ -277,6 +283,13 @@ main h2 {
   margin: 0 0 8px;
 }
 
+/* Body copy that starts right under the title needs the same breathing room
+   the meta line gives on other pages. */
+main h2 + p:not(.meta),
+main h2 + ul {
+  margin-top: 28px;
+}
+
 /* Section label */
 main h3 {
   font-family: var(--mono);
@@ -292,6 +305,26 @@ main h3 {
 
 main h3:first-of-type {
   margin-top: 40px;
+}
+
+/* News entries: the title is the headline of the entry, not a section label */
+main h3.entry-title {
+  font-family: var(--sans);
+  font-size: 22px;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  text-transform: none;
+  color: var(--fg-strong);
+  margin: 72px 0 8px;
+  padding: 32px 0 0;
+  border-top: 1px solid var(--line-soft);
+  border-bottom: 0;
+}
+
+main h3.entry-title:first-of-type {
+  margin-top: 36px;
+  padding-top: 0;
+  border-top: 0;
 }
 
 main h4 {
@@ -451,6 +484,11 @@ hr {
   margin: 0;
 }
 
+/* A link that follows the grid (“all works”) needs air above it */
+.work-grid + p {
+  margin-top: 36px;
+}
+
 .work-item a {
   display: block;
   border-bottom: 0;
@@ -553,6 +591,62 @@ hr {
   aspect-ratio: 16 / 9;
   display: block;
   border: 0;
+}
+
+/* Still images on work pages — same well and hairline as the video embeds */
+.work-figure {
+  margin: 28px 0 32px;
+}
+
+.work-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--line-soft);
+  background: var(--well);
+}
+
+.work-figure figcaption {
+  margin-top: 10px;
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1.7;
+  letter-spacing: 0.04em;
+  color: var(--dim);
+}
+
+html[lang^="ko"] .work-figure figcaption {
+  letter-spacing: 0.02em;
+  word-break: keep-all;
+}
+
+/* A linked image carries no underline */
+.work-figure a {
+  display: block;
+  border: 0;
+}
+
+/* Audio-visual scene running inside a work page. It is its own black page in
+   an iframe. The scene draws its readouts above and below the image and pins
+   its transport to the bottom edge, so the frame is taller than the 16:9
+   image to keep those from colliding — more so on narrow screens. */
+.scene-embed {
+  margin: 28px 0 20px;
+  border: 1px solid var(--line-soft);
+  background: #000;
+}
+
+.scene-embed iframe {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  border: 0;
+}
+
+@media (max-width: 700px) {
+  .scene-embed iframe {
+    aspect-ratio: 4 / 5;
+  }
 }
 
 .strudel-container {
@@ -747,7 +841,28 @@ html[lang^="ko"] .work-year {
   letter-spacing: 0.04em;
 }
 
-html[lang^="ko"] .container p {
+/* Hangul has no capitals to carry a 10px label; give section labels and
+   small captions a size that stays readable. */
+html[lang^="ko"] main h3:not(.entry-title) {
+  font-size: 12px;
+}
+
+html[lang^="ko"] main h3.entry-title {
+  letter-spacing: -0.01em;
+}
+
+html[lang^="ko"] .work-kind {
+  font-size: 11px;
+}
+
+html[lang^="ko"] .work-figure figcaption,
+html[lang^="ko"] p.meta,
+html[lang^="ko"] .list .meta {
+  font-size: 12px;
+}
+
+html[lang^="ko"] .container p,
+html[lang^="ko"] main h2 {
   word-break: keep-all;
 }
 

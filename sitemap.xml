@@ -32,6 +32,14 @@
 
   <!-- Works (EN) -->
   <url>
+    <loc>https://hearenzo.github.io/works/reciting-machine-2026/</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://hearenzo.github.io/works/trans-iii-2025/</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://hearenzo.github.io/works/trans-2023/</loc>
     <priority>0.8</priority>
   </url>
@@ -86,6 +94,10 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://hearenzo.github.io/ko/</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
     <loc>https://hearenzo.github.io/ko/works/</loc>
     <priority>0.8</priority>
   </url>
@@ -107,6 +119,14 @@
   </url>
 
   <!-- Works (KO) -->
+  <url>
+    <loc>https://hearenzo.github.io/ko/works/reciting-machine-2026/</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://hearenzo.github.io/ko/works/trans-iii-2025/</loc>
+    <priority>0.7</priority>
+  </url>
   <url>
     <loc>https://hearenzo.github.io/ko/works/trans-2023/</loc>
     <priority>0.7</priority>

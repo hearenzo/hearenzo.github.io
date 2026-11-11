@@ -6,6 +6,12 @@ Current
 - The Reciting Machine (읊는 기계), sound installation, 2026.
 - Selected for unfoldX 2026, Seoul Foundation for Arts and Culture convergence art programme.
 - Culture Station Seoul 284, 26 November - 9 December 2026.
+- Work page: https://hearenzo.github.io/works/reciting-machine-2026/
+- unfoldX 2026 programme page: https://unfoldx.org/program/%ec%98%a4%eb%aa%85%ec%84%9d/
+
+Recent
+- TRANS III: Movement Without a Subject (TRANS III: 주어 없는 움직임), performance, Mary Hall, Sogang University, August 2025.
+- Work page: https://hearenzo.github.io/works/trans-iii-2025/
 
 Canonical site
 - https://hearenzo.github.io/
@@ -19,6 +25,7 @@ Primary pages (EN)
 - https://hearenzo.github.io/contact/
 
 Primary pages (KO)
+- https://hearenzo.github.io/ko/
 - https://hearenzo.github.io/ko/news/
 - https://hearenzo.github.io/ko/works/
 - https://hearenzo.github.io/ko/recordings/

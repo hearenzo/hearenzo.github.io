@@ -1,18 +1,31 @@
+{%- comment -%}
+  Korean pages live under /ko/ and carry `lang: ko`. Everything in the header
+  is derived from that: the menu stays inside the reader's language, and the
+  EN / KO buttons point at the same page in the other language.
+{%- endcomment -%}
+{%- if page.lang == 'ko' -%}
+  {%- assign base = '/ko' -%}
+  {%- assign en_path = page.url | remove_first: '/ko' -%}
+{%- else -%}
+  {%- assign base = '' -%}
+  {%- assign en_path = page.url -%}
+{%- endif -%}
+{%- assign ko_path = '/ko' | append: en_path -%}
 <header class="container">
-  <h1><a href="/">Myungseok Oh</a></h1>
+  <h1><a href="{{ base }}/">Myungseok Oh</a></h1>
   <nav>
     <ul>
-      <li><a href="/"{% if page.url == '/' %} aria-current="page"{% endif %} data-i18n="nav.main">main</a></li>
-      <li><a href="/news/"{% if page.url == '/news/' %} aria-current="page"{% endif %} data-i18n="nav.news">news</a></li>
-      <li><a href="/works/"{% if page.url == '/works/' %} aria-current="page"{% endif %} data-i18n="nav.works">works</a></li>
-      <li><a href="/recordings/"{% if page.url == '/recordings/' %} aria-current="page"{% endif %} data-i18n="nav.recordings">recordings</a></li>
-      <li><a href="/publications/"{% if page.url == '/publications/' %} aria-current="page"{% endif %} data-i18n="nav.publications">publications</a></li>
-      <li><a href="/biography/"{% if page.url == '/biography/' %} aria-current="page"{% endif %} data-i18n="nav.biography">biography</a></li>
-      <li><a href="/contact/"{% if page.url == '/contact/' %} aria-current="page"{% endif %} data-i18n="nav.contact">contact</a></li>
+      <li><a href="{{ base }}/"{% if en_path == '/' %} aria-current="page"{% endif %}>main</a></li>
+      <li><a href="{{ base }}/news/"{% if en_path == '/news/' %} aria-current="page"{% endif %}>news</a></li>
+      <li><a href="{{ base }}/works/"{% if en_path == '/works/' %} aria-current="page"{% endif %}>works</a></li>
+      <li><a href="{{ base }}/recordings/"{% if en_path == '/recordings/' %} aria-current="page"{% endif %}>recordings</a></li>
+      <li><a href="{{ base }}/publications/"{% if en_path == '/publications/' %} aria-current="page"{% endif %}>publications</a></li>
+      <li><a href="{{ base }}/biography/"{% if en_path == '/biography/' %} aria-current="page"{% endif %}>biography</a></li>
+      <li><a href="{{ base }}/contact/"{% if en_path == '/contact/' %} aria-current="page"{% endif %}>contact</a></li>
       <li class="lang-switcher">
-        <a href="/" class="lang-btn{% unless page.lang or page.url == '/' %} active{% endunless %}" data-lang="en" aria-label="English">EN</a>
+        <a href="{{ en_path }}" class="lang-btn{% unless page.lang == 'ko' %} active{% endunless %}" hreflang="en" aria-label="English">EN</a>
         <span class="lang-separator">/</span>
-        <a href="/ko/news/" class="lang-btn{% if page.lang == 'ko' or page.url == '/ko/' %} active{% endif %}" data-lang="ko" aria-label="한국어">KO</a>
+        <a href="{{ ko_path }}" class="lang-btn{% if page.lang == 'ko' %} active{% endif %}" hreflang="ko" aria-label="한국어">KO</a>
       </li>
     </ul>
   </nav>

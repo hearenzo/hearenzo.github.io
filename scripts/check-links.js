@@ -28,9 +28,10 @@ for (const file of htmlFiles) {
   let match;
   while ((match = regex.exec(content)) !== null) {
     if (match[2].includes('{{')) continue;
-    const target = match[2].startsWith('/')
-      ? path.join(root, match[2])
-      : path.resolve(dir, match[2]);
+    const linkPath = match[2].split('?')[0];
+    const target = linkPath.startsWith('/')
+      ? path.join(root, linkPath)
+      : path.resolve(dir, linkPath);
     if (!fs.existsSync(target)) {
       console.error(`Broken link in ${path.relative(root, file)}: ${match[2]}`);
       broken = true;
