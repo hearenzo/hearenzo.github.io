@@ -27,7 +27,13 @@ html[lang=ko] article { word-break: keep-all; overflow-wrap: break-word; }
 h1 { font-size: clamp(2.5rem, 6.7vw, 4.25rem); letter-spacing: -.055em; line-height: 1.05; font-weight: 650; text-wrap: balance; }
 .translation { font-size: 1.15rem; margin-top: .48rem; letter-spacing: -.02em; color: var(--muted); }
 .translation:lang(en) { font: italic 1.45rem/1.12 var(--serif); }
-.lead { font-size: clamp(1.15rem, 2.7vw, 1.38rem); line-height: 1.55; letter-spacing: -.026em; margin-bottom: .9rem; }
+.essay p + p { margin-top: .95rem; }
+.archive-line, .excerpt { margin: 0; }
+.archive-line { margin: 1.25rem 0 1.45rem; }
+.archive-line figcaption, .excerpt figcaption { font-size: .84rem; line-height: 1.5; color: var(--muted); }
+.excerpt figcaption { margin-top: .55rem; }
+.excerpt video { display: block; width: 100%; aspect-ratio: 16/9; background: #171715; }
+.ear-guide summary { font-weight: 600; }
 section { margin-top: 2.15rem; }
 h2 { font-size: 1.06rem; letter-spacing: -.023em; margin-bottom: .65rem; }
 .ears { border-bottom: 1px solid var(--rule); }
