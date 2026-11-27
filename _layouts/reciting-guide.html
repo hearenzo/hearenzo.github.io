@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="{{ page.lang }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ page.title }}</title>
+  <meta name="description" content="{{ page.description }}">
+  <link rel="canonical" href="https://hearenzo.github.io{{ page.url }}">
+  <link rel="alternate" hreflang="ko" href="https://hearenzo.github.io/reciting/">
+  <link rel="alternate" hreflang="en" href="https://hearenzo.github.io/reciting/en/">
+  <meta property="og:title" content="{{ page.title }}">
+  <meta property="og:description" content="{{ page.description }}">
+  <meta property="og:image" content="https://hearenzo.github.io/assets/img/works/reciting-machine-2026/small-dining-room.webp">
+  <meta property="og:url" content="https://hearenzo.github.io{{ page.url }}">
+  <link rel="icon" href="/assets/img/favicon.png">
+  <link rel="stylesheet" href="/assets/css/reciting-guide.css">
+</head>
+<body>
+  <header class="mast">
+    {% if page.lang == 'ko' %}
+      <a href="/ko/" class="artist">오명석 <span lang="en">OH Myungseok</span></a>
+    {% else %}
+      <a href="/" class="artist">OH Myungseok</a>
+    {% endif %}
+    <nav aria-label="{% if page.lang == 'ko' %}언어{% else %}Language{% endif %}">
+      <a href="/reciting/" hreflang="ko" lang="ko"{% if page.lang == 'ko' %} aria-current="page"{% endif %}>한국어</a>
+      <a href="/reciting/en/" hreflang="en" lang="en"{% if page.lang == 'en' %} aria-current="page"{% endif %}>English</a>
+    </nav>
+  </header>
+  <main>
+    <img class="hero" width="1440" height="810" src="/assets/img/works/reciting-machine-2026/small-dining-room.webp" alt="{{ page.image_alt }}">
+    {{ content }}
+  </main>
+</body>
+</html>
