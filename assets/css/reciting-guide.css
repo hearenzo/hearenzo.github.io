@@ -58,3 +58,20 @@ summary { cursor: pointer; }
   article { padding-inline: 19px; }
   .ears div { column-gap: .55rem; }
 }
+
+.guide-jumps { display:flex; flex-wrap:wrap; gap:.2rem 1.2rem; margin:-.65rem 0 1.35rem; }
+.guide-jumps a { display:inline-flex; align-items:center; min-height:44px; font-size:.9rem; text-decoration:underline; text-underline-offset:.25em; }
+.comparison, .archive-method { scroll-margin-top:1rem; border-top:1.5px solid var(--ink); padding-top:1rem; }
+.comparison h2, .archive-method h2 { font-size:clamp(1.35rem,4.6vw,1.75rem); line-height:1.18; margin-bottom:1rem; }
+.audio-cut { margin:0; padding:.9rem 0 1rem; border-top:1px solid var(--rule); }
+.audio-cut figcaption { display:flex; align-items:baseline; justify-content:space-between; gap:.8rem; }
+.audio-cut h3 { margin:0; font-size:1.04rem; line-height:1.4; }
+.audio-cut figcaption span, .take-source, .source-credit { font-size:.86rem; color:var(--muted); }
+.audio-cut figcaption span { white-space:nowrap; font-variant-numeric:tabular-nums; }
+.audio-cut audio { display:block; width:100%; margin:.65rem 0; }
+.take-note, .archive-method p { font-size:.97rem; line-height:1.65; }
+.source-credit { margin-top:.1rem; }
+.archive-method details { margin-top:.8rem; }
+.method-list { margin:.1rem 0 0; padding-inline-start:1.55rem; }
+.method-list li { padding:0 0 .8rem .2rem; }
+.method-list p { margin-top:.2rem; }
