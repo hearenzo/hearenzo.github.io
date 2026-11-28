@@ -598,6 +598,12 @@ hr {
   margin: 28px 0 32px;
 }
 
+.work-figure--portrait {
+  width: min(100%, 52vh);
+  width: min(100%, 52svh);
+  margin-inline: auto;
+}
+
 .work-figure img {
   display: block;
   width: 100%;
